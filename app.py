@@ -431,10 +431,9 @@ def get_prayer_times(city="قم", country="Iran"):
     cached = get_cached(cache_key)
     if cached:
         return cached
-    
     try:
         url = f"https://api.aladhan.com/v1/timingsByCity?city={city}&country={country}&method=7&school=0"
-        response = requests.get(url, timeout=4)  # ← کاهش به ۴ ثانیه
+        response = requests.get(url, timeout=4)
         if response.status_code == 200:
             data = response.json()
             timings = data["data"]["timings"]
@@ -481,26 +480,42 @@ def get_persian_date(today):
     year = str(today.year).replace("0", "۰").replace("1", "۱").replace("2", "۲").replace("3", "۳").replace("4", "۴").replace("5", "۵").replace("6", "۶").replace("7", "۷").replace("8", "۸").replace("9", "۹")
     return f"{weekday} {day} {month} {year}"
 
-def get_hijri_date(gregorian_date):
+# ===== تابع جدید: هم رشته و هم شیء قمری اصلاح‌شده =====
+def get_hijri_date_and_obj(gregorian_date):
+    """
+    تبدیل تاریخ میلادی به قمری با یک روز تعدیل (کم کردن یک روز)
+    و بازگرداندن هم رشته نمایشی و هم دیکشنری {month, day, year} برای مناسبت‌ها.
+    """
     try:
         hijri = Gregorian(gregorian_date.year, gregorian_date.month, gregorian_date.day).to_hijri()
+        # اصلاح: یک روز کم کن
+        day = hijri.day - 1
+        month = hijri.month
+        year = hijri.year
+        if day == 0:
+            month -= 1
+            if month == 0:
+                month = 12
+                year -= 1
+            # تعداد روزهای ماه قبل (تقریبی)
+            if month in [1, 3, 5, 7, 9, 11]:
+                day = 30
+            else:
+                day = 29
         hijri_months = {
             1: "محرم", 2: "صفر", 3: "ربیع‌الاول", 4: "ربیع‌الثانی",
             5: "جمادی‌الاول", 6: "جمادی‌الثانی", 7: "رجب", 8: "شعبان",
             9: "رمضان", 10: "شوال", 11: "ذی‌قعده", 12: "ذی‌الحجه"
         }
-        return f"{hijri.day} {hijri_months[hijri.month]} {hijri.year}"
+        date_str = f"{day} {hijri_months[month]} {year}"
+        return date_str, {"month": month, "day": day, "year": year}
     except:
-        return "نامشخص"
+        return "نامشخص", None
 
 def get_next_prayer(prayer_times):
-    """محاسبه زمان باقی‌مانده تا اذان بعدی بر اساس زمان ایران"""
     if not prayer_times:
         return None, None
-    
     now = get_now_tehran()
-    now_time = now.time()
-    
     prayers = [
         ("اذان صبح", prayer_times["Fajr"]),
         ("طلوع", prayer_times["Sunrise"]),
@@ -509,15 +524,11 @@ def get_next_prayer(prayer_times):
         ("اذان مغرب", prayer_times["Maghrib"]),
         ("اذان عشاء", prayer_times["Isha"]),
     ]
-    
-    # پیدا کردن اولین اذان بعد از زمان فعلی
     for name, time_str in prayers:
         try:
             pray_time = datetime.strptime(time_str, "%H:%M").time()
-            # ترکیب با تاریخ امروز برای محاسبه دقیق
             pray_datetime = datetime.combine(now.date(), pray_time)
             pray_datetime = TEHRAN_TZ.localize(pray_datetime)
-            
             if pray_datetime > now:
                 delta = pray_datetime - now
                 hours = delta.seconds // 3600
@@ -528,12 +539,10 @@ def get_next_prayer(prayer_times):
                     return name, f"{minutes} دقیقه"
         except:
             pass
-    
-    # اگر هیچ اذانی باقی نمانده بود (همه گذشته)، اولین اذان فردا
     return prayers[0][0], "فردا"
 
 # ============================================================
-# مسیرهای وب‌سایت
+# مسیرهای وب‌سایت (با استفاده از تابع جدید)
 # ============================================================
 
 @app.route('/')
@@ -541,19 +550,22 @@ def home():
     today = get_today_tehran()
     city = request.args.get('city', 'قم')
     
-    # تاریخ‌ها
     persian_date = get_persian_date(today)
     gregorian = today.togregorian()
     miladi_date = gregorian.strftime("%B %d, %A")
-    hijri_date = get_hijri_date(gregorian)
     
-    # اطلاعات
+    # دریافت تاریخ قمری اصلاح‌شده و شیء آن
+    hijri_date, hijri_obj = get_hijri_date_and_obj(gregorian)
+    
     prayer = get_prayer_times(city)
     weather = get_weather(city)
-    # قیمت طلا و دلار (حذف شد)
     shamsi_events_list = get_shamsi_events(today.year, today.month, today.day)
-    hijri_obj = Gregorian(gregorian.year, gregorian.month, gregorian.day).to_hijri()
-    hijri_events_list = get_hijri_events(hijri_obj.month, hijri_obj.day)
+    
+    # مناسبت‌های قمری بر اساس تاریخ اصلاح‌شده
+    hijri_events_list = []
+    if hijri_obj:
+        hijri_events_list = get_hijri_events(hijri_obj["month"], hijri_obj["day"])
+    
     next_prayer_name, next_prayer_time = get_next_prayer(prayer)
     motivation = random.choice(motivation_messages)
     
@@ -563,7 +575,6 @@ def home():
         hijri_date=hijri_date,
         prayer=prayer,
         weather=weather,
-        # prices حذف شد
         shamsi_events=shamsi_events_list,
         hijri_events=hijri_events_list,
         next_prayer_name=next_prayer_name,
@@ -578,21 +589,22 @@ def api_info():
     today = get_today_tehran()
     city = request.args.get('city', 'قم')
     gregorian = today.togregorian()
-    hijri = Gregorian(gregorian.year, gregorian.month, gregorian.day).to_hijri()
     
     prayer = get_prayer_times(city)
     next_name, next_time = get_next_prayer(prayer)
+    
+    # دریافت تاریخ قمری اصلاح‌شده برای API
+    _, hijri_obj = get_hijri_date_and_obj(gregorian)
     
     return jsonify({
         "timezone": "Asia/Tehran",
         "server_time": get_now_tehran().isoformat(),
         "shamsi": today.strftime("%Y-%m-%d"),
         "miladi": gregorian.strftime("%Y-%m-%d"),
-        "hijri": f"{hijri.year}-{hijri.month}-{hijri.day}",
+        "hijri": f"{hijri_obj['year']}-{hijri_obj['month']}-{hijri_obj['day']}" if hijri_obj else None,
         "prayer": prayer,
         "next_prayer": {"name": next_name, "remaining": next_time} if next_name else None,
         "weather": get_weather(city),
-        # prices حذف شد
     })
 
 if __name__ == '__main__':
