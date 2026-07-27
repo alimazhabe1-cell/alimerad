@@ -406,26 +406,51 @@ def get_today_tehran():
     """دریافت تاریخ امروز شمسی بر اساس زمان ایران"""
     now = get_now_tehran()
     return jdatetime.datetime.fromgregorian(datetime=now).date()
+# ============================================================
+# سیستم کش ساده (در حافظه)
+# ============================================================
+cache = {}
+CACHE_DURATION = 300  # ۵ دقیقه
 
+def get_cached(key):
+    if key in cache:
+        data, timestamp = cache[key]
+        if datetime.now() - timestamp < timedelta(seconds=CACHE_DURATION):
+            return data
+        else:
+            del cache[key]
+    return None
+
+def set_cached(key, value):
+    cache[key] = (value, datetime.now())
 # ============================================================
 # توابع اصلی
 # ============================================================
 def get_prayer_times(city="قم", country="Iran"):
+    cache_key = f"prayer_{city}"
+    cached = get_cached(cache_key)
+    if cached:
+        return cached
+    
     try:
         url = f"https://api.aladhan.com/v1/timingsByCity?city={city}&country={country}&method=7&school=0"
-        response = requests.get(url, timeout=10)
-        data = response.json()
-        timings = data["data"]["timings"]
-        return {
-            "Fajr": timings["Fajr"],
-            "Sunrise": timings["Sunrise"],
-            "Dhuhr": timings["Dhuhr"],
-            "Asr": timings["Asr"],
-            "Maghrib": timings["Maghrib"],
-            "Isha": timings["Isha"],
-        }
+        response = requests.get(url, timeout=4)  # ← کاهش به ۴ ثانیه
+        if response.status_code == 200:
+            data = response.json()
+            timings = data["data"]["timings"]
+            result = {
+                "Fajr": timings["Fajr"],
+                "Sunrise": timings["Sunrise"],
+                "Dhuhr": timings["Dhuhr"],
+                "Asr": timings["Asr"],
+                "Maghrib": timings["Maghrib"],
+                "Isha": timings["Isha"],
+            }
+            set_cached(cache_key, result)
+            return result
     except:
-        return None
+        pass
+    return None
 
 def get_weather(city="قم"):
     try:
@@ -440,19 +465,6 @@ def get_weather(city="قم"):
         }
     except:
         return None
-
-def get_gold_usd_prices():
-    try:
-        url = "https://brsapi.ir/free-api/gold-currency"
-        response = requests.get(url, timeout=10)
-        data = response.json()
-        gold = data.get('gold', {}).get('18', {}).get('price')
-        usd = data.get('currency', {}).get('usd', {}).get('price')
-        if gold and usd:
-            return {"gold": int(gold), "usd": int(usd)}
-    except:
-        pass
-    return None
 
 def get_shamsi_events(year, month, day):
     key = f"{month}-{day}"
