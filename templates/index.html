@@ -1052,21 +1052,23 @@
 ============================================================ -->
 <script>
     // ===== اشتراک‌گذاری =====
-    function shareWebsite() {
-        if (navigator.share) {
-            navigator.share({
-                title: 'اطلاعات روز - تقویم و اوقات شرعی',
-                text: '📅 اطلاعات امروز را با تقویم شمسی، میلادی، قمری و اوقات شرعی ببینید!',
-                url: window.location.href
-            }).catch(() => {});
-        } else {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                alert('✅ لینک کپی شد!');
-            }).catch(() => {
-                prompt('لینک را کپی کنید:', window.location.href);
-            });
-        }
+function shareWebsite() {
+    const link = 'https://alimerad.onrender.com/';
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'اطلاعات روز - تقویم و اوقات شرعی',
+            text: '📅 اطلاعات امروز را با تقویم شمسی، میلادی، قمری و اوقات شرعی ببینید!',
+            url: link
+        }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(link).then(() => {
+            alert('✅ لینک کپی شد!');
+        }).catch(() => {
+            prompt('لینک را کپی کنید:', link);
+        });
     }
+}
 
     // ===== دکمه بازگشت به بالا =====
     window.addEventListener('scroll', function() {
