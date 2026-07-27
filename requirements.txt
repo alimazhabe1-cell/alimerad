@@ -4,3 +4,7 @@ requests
 hijri-converter
 pytz
 gunicorn
+Flask-SQLAlchemy
+Flask-Login
+Flask-WTF
+email-validator
