@@ -1198,7 +1198,16 @@
             btn.classList.remove('visible');
         }
     });
-
+<div class="user-section">
+    {% if current_user.is_authenticated %}
+        <span class="user-greeting">👋 {{ current_user.username }}</span>
+        <a href="{{ url_for('profile') }}" class="profile-link">پروفایل</a>
+        <a href="{{ url_for('logout') }}" class="logout-link">خروج</a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="auth-link">ورود</a>
+        <a href="{{ url_for('register') }}" class="auth-link">ثبت‌نام</a>
+    {% endif %}
+</div>
     // ===== تغییر تم =====
     function toggleTheme() {
         document.body.classList.toggle('light-theme');
