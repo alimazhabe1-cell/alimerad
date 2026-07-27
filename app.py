@@ -23,7 +23,7 @@ PERSIAN_WEEKDAYS = {
 }
 
 # ============================================================
-# دیکشنری مناسبت‌ها
+# دیکشنری مناسبت‌ها (شمسی و قمری) - کامل
 # ============================================================
 shamsi_events = {
     "1-1": ["جشن نوروز", "سال نو"],
@@ -394,23 +394,22 @@ motivation_messages = [
 ]
 
 # ============================================================
-# ⏰ تابع دریافت زمان ایران (پایدار)
+# ⏰ تابع دریافت زمان ایران
 # ============================================================
 TEHRAN_TZ = pytz.timezone('Asia/Tehran')
 
 def get_now_tehran():
-    """دریافت زمان فعلی با تایم‌زون ایران (datetime با timezone)"""
     return datetime.now(TEHRAN_TZ)
 
 def get_today_tehran():
-    """دریافت تاریخ امروز شمسی بر اساس زمان ایران"""
     now = get_now_tehran()
     return jdatetime.datetime.fromgregorian(datetime=now).date()
+
 # ============================================================
-# سیستم کش ساده (در حافظه)
+# سیستم کش
 # ============================================================
 cache = {}
-CACHE_DURATION = 300  # ۵ دقیقه
+CACHE_DURATION = 300
 
 def get_cached(key):
     if key in cache:
@@ -423,6 +422,7 @@ def get_cached(key):
 
 def set_cached(key, value):
     cache[key] = (value, datetime.now())
+
 # ============================================================
 # توابع اصلی
 # ============================================================
@@ -541,33 +541,60 @@ def get_next_prayer(prayer_times):
             pass
     return prayers[0][0], "فردا"
 
+# ===== توابع کمکی برای پیمایش تاریخ =====
+def get_days_in_month(year, month):
+    """تعداد روزهای یک ماه شمسی"""
+    if month <= 6:
+        return 31
+    elif month <= 11:
+        return 30
+    else:
+        # اسفند: ۲۹ روز در سال عادی، ۳۰ روز در سال کبیسه
+        return 30 if jdatetime.date(year, 12, 1).is_leap() else 29
+
+def parse_date_params():
+    """دریافت year, month, day از پارامترهای URL و ساخت شیء jdatetime.date"""
+    year = request.args.get('year', type=int)
+    month = request.args.get('month', type=int)
+    day = request.args.get('day', type=int)
+    
+    today = get_today_tehran()
+    if year and month and day:
+        try:
+            if 1 <= month <= 12 and 1 <= day <= get_days_in_month(year, month):
+                return jdatetime.date(year, month, day)
+        except:
+            pass
+    return today
+
 # ============================================================
-# مسیرهای وب‌سایت (با استفاده از تابع جدید)
+# مسیرهای وب‌سایت
 # ============================================================
 
 @app.route('/')
 def home():
+    selected_date = parse_date_params()
     today = get_today_tehran()
     city = request.args.get('city', 'قم')
     
-    persian_date = get_persian_date(today)
-    gregorian = today.togregorian()
-    miladi_date = gregorian.strftime("%B %d, %A")
+    prev_day = selected_date - timedelta(days=1)
+    next_day = selected_date + timedelta(days=1)
     
-    # دریافت تاریخ قمری اصلاح‌شده و شیء آن
+    persian_date = get_persian_date(selected_date)
+    gregorian = selected_date.togregorian()
+    miladi_date = gregorian.strftime("%B %d, %A")
     hijri_date, hijri_obj = get_hijri_date_and_obj(gregorian)
     
     prayer = get_prayer_times(city)
     weather = get_weather(city)
-    shamsi_events_list = get_shamsi_events(today.year, today.month, today.day)
-    
-    # مناسبت‌های قمری بر اساس تاریخ اصلاح‌شده
+    shamsi_events_list = get_shamsi_events(selected_date.year, selected_date.month, selected_date.day)
     hijri_events_list = []
     if hijri_obj:
         hijri_events_list = get_hijri_events(hijri_obj["month"], hijri_obj["day"])
-    
     next_prayer_name, next_prayer_time = get_next_prayer(prayer)
     motivation = random.choice(motivation_messages)
+    
+    months_fa = PERSIAN_MONTHS
     
     return render_template('index.html',
         persian_date=persian_date,
@@ -581,7 +608,18 @@ def home():
         next_prayer_time=next_prayer_time,
         motivation=motivation,
         city=city,
-        selected_city=city
+        selected_city=city,
+        selected_year=selected_date.year,
+        selected_month=selected_date.month,
+        selected_day=selected_date.day,
+        prev_year=prev_day.year,
+        prev_month=prev_day.month,
+        prev_day_num=prev_day.day,
+        next_year=next_day.year,
+        next_month=next_day.month,
+        next_day_num=next_day.day,
+        months_fa=months_fa,
+        is_today=(selected_date == today)
     )
 
 @app.route('/api/info')
@@ -592,8 +630,6 @@ def api_info():
     
     prayer = get_prayer_times(city)
     next_name, next_time = get_next_prayer(prayer)
-    
-    # دریافت تاریخ قمری اصلاح‌شده برای API
     _, hijri_obj = get_hijri_date_and_obj(gregorian)
     
     return jsonify({
