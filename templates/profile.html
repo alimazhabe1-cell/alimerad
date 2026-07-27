@@ -2,14 +2,20 @@
 {% block content %}
 <div class="auth-container">
     <h2>پروفایل کاربری</h2>
-    <p>خوش آمدید، {{ current_user.username }}!</p>
+    <p style="text-align:center; font-size:18px;">👋 {{ current_user.username }}</p>
+    <hr style="border-color:rgba(255,255,255,0.1); margin:15px 0;">
     <form method="POST" action="{{ url_for('profile') }}">
         {{ form.hidden_tag() }}
         <div class="form-group">
-            {{ form.preferred_city.label }} {{ form.preferred_city(class="form-control") }}
+            {{ form.preferred_city.label }}
+            {{ form.preferred_city(class="form-control") }}
+            {% for error in form.preferred_city.errors %}
+                <small style="color:#ff6b6b;">{{ error }}</small>
+            {% endfor %}
         </div>
         {{ form.submit(class="btn btn-primary") }}
     </form>
-    <a href="{{ url_for('logout') }}" class="btn btn-danger">خروج</a>
+    <a href="{{ url_for('logout') }}" class="btn btn-danger" style="display:block; text-align:center; text-decoration:none;">خروج از حساب</a>
+    <p><a href="{{ url_for('home') }}">بازگشت به صفحه اصلی</a></p>
 </div>
 {% endblock %}
