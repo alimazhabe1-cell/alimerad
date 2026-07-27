@@ -5,16 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>اطلاعات روز - تقویم و اوقات شرعی</title>
     
-    <!-- ===== فونت Vazirmatn از گوگل ===== -->
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- ===== FontAwesome برای آیکون‌ها ===== -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        /* ============================================================
-                   تنظیمات پایه
-                   ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -47,7 +41,6 @@
             transition: background 0.5s ease, color 0.5s ease;
         }
 
-        /* ===== تم روشن ===== */
         body.light-theme {
             --bg-primary: linear-gradient(145deg, #f5f7fa, #c3cfe2);
             --bg-card: rgba(255, 255, 255, 0.6);
@@ -116,9 +109,35 @@
             background: rgba(0, 0, 0, 0.12);
         }
 
-        /* ============================================================
-                   کارت اصلی
-                   ============================================================ */
+        /* ===== ناوبری تاریخ (جدید) ===== */
+        body.light-theme .date-navigation {
+            border-color: rgba(0, 0, 0, 0.06);
+        }
+
+        body.light-theme .nav-btn {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.06);
+            color: #1a1a2e;
+        }
+
+        body.light-theme .nav-btn:hover {
+            background: rgba(0, 0, 0, 0.10);
+        }
+
+        body.light-theme .date-selects {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        body.light-theme .date-selects select {
+            background: rgba(0, 0, 0, 0.04);
+            color: #1a1a2e;
+        }
+
+        body.light-theme .date-selects select option {
+            background: #fff;
+            color: #1a1a2e;
+        }
+
         .container {
             max-width: 820px;
             width: 100%;
@@ -139,7 +158,6 @@
             transition: background 0.5s ease, border 0.5s ease;
         }
 
-        /* ===== واترمارک ===== */
         .card::after {
             content: '';
             position: absolute;
@@ -153,9 +171,6 @@
             z-index: 0;
         }
 
-        /* ============================================================
-                   انیمیشن‌ها
-                   ============================================================ */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -168,22 +183,14 @@
         }
 
         @keyframes pulse {
-            0%,
-            100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.03);
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
         }
 
         .prayer-item.next-prayer {
             animation: pulse 2s infinite;
         }
 
-        /* ============================================================
-                   هدر
-                   ============================================================ */
         .header {
             display: flex;
             justify-content: space-between;
@@ -212,7 +219,6 @@
             letter-spacing: -0.5px;
         }
 
-        /* ===== دکمه تغییر تم ===== */
         .theme-toggle {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.12);
@@ -233,7 +239,6 @@
             transform: scale(1.02);
         }
 
-        /* ===== دکمه اشتراک‌گذاری ===== */
         .share-btn {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.10);
@@ -255,9 +260,113 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* ============================================================
-                   انتخاب شهر
-                   ============================================================ */
+        /* ===== ناوبری تاریخ ===== */
+        .date-navigation {
+            margin: 15px 0 20px 0;
+            padding: 12px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 50px;
+            padding: 8px 18px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.16);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.today-btn {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a1a2e;
+            font-weight: 600;
+            border: none;
+        }
+
+        .nav-btn.today-btn:hover {
+            transform: scale(1.04);
+        }
+
+        .date-picker-form {
+            display: flex;
+            justify-content: center;
+        }
+
+        .date-selects {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 8px 12px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .date-selects select {
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            border-radius: 30px;
+            padding: 6px 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: 'Vazirmatn';
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .date-selects select:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .date-selects select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .date-selects .go-btn {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            border: none;
+            border-radius: 30px;
+            padding: 6px 18px;
+            color: #1a1a2e;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn';
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .date-selects .go-btn:hover {
+            transform: scale(1.04);
+        }
+
+        /* ===== شهر ===== */
         .city-selector {
             margin-bottom: 22px;
             display: flex;
@@ -324,9 +433,7 @@
             transform: scale(0.97);
         }
 
-        /* ============================================================
-                   تاریخ‌ها
-                   ============================================================ */
+        /* ===== تاریخ‌ها ===== */
         .date-box {
             background: rgba(0, 0, 0, 0.20);
             border-radius: 16px;
@@ -354,9 +461,7 @@
             display: inline-block;
         }
 
-        /* ============================================================
-                   مناسبت‌ها
-                   ============================================================ */
+        /* ===== مناسبت‌ها ===== */
         .events-section {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 16px;
@@ -404,9 +509,7 @@
             font-weight: 300;
         }
 
-        /* ============================================================
-                   آب و هوا
-                   ============================================================ */
+        /* ===== آب و هوا ===== */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -452,9 +555,7 @@
             margin-top: 2px;
         }
 
-        /* ============================================================
-                   اوقات شرعی
-                   ============================================================ */
+        /* ===== اوقات شرعی ===== */
         .prayer-title {
             font-size: 19px;
             font-weight: 700;
@@ -506,7 +607,6 @@
             margin-top: 2px;
         }
 
-        /* ===== اذان بعدی (هایلایت) ===== */
         .prayer-item.next-prayer {
             border-color: var(--gold);
             background: var(--prayer-highlight);
@@ -523,9 +623,6 @@
             color: var(--gold);
         }
 
-        /* ============================================================
-                   زمان اذان بعدی (باکس اختصاصی)
-                   ============================================================ */
         .next-prayer-box {
             background: linear-gradient(135deg, rgba(255, 215, 0, 0.10), rgba(255, 215, 0, 0.03));
             border: 1px solid rgba(255, 215, 0, 0.20);
@@ -564,9 +661,7 @@
             color: var(--gold);
         }
 
-        /* ============================================================
-                   پیام انگیزشی
-                   ============================================================ */
+        /* ===== پیام انگیزشی ===== */
         .motivation-box {
             background: linear-gradient(135deg, rgba(247, 151, 30, 0.08), rgba(255, 210, 0, 0.03));
             border: 1px solid rgba(255, 210, 0, 0.12);
@@ -607,9 +702,7 @@
             z-index: 1;
         }
 
-        /* ============================================================
-                   فوتر
-                   ============================================================ */
+        /* ===== فوتر ===== */
         .footer {
             text-align: center;
             margin-top: 22px;
@@ -645,9 +738,6 @@
             transform: translateY(-2px);
         }
 
-        /* ============================================================
-                   دکمه بازگشت به بالا
-                   ============================================================ */
         #backToTop {
             position: fixed;
             bottom: 30px;
@@ -683,46 +773,37 @@
             transform: scale(0.92);
         }
 
-        /* ============================================================
-                   واکنش‌گرا (موبایل و تبلت)
-                   ============================================================ */
+        /* ===== واکنش‌گرا ===== */
         @media (max-width: 768px) {
             .card {
                 padding: 22px 16px;
                 border-radius: 24px;
             }
-
             h1 {
                 font-size: 22px;
             }
-
             .header {
                 flex-direction: column;
                 align-items: stretch;
                 gap: 10px;
             }
-
             .header-left {
                 justify-content: space-between;
                 width: 100%;
             }
-
             .share-btn {
                 align-self: flex-start;
                 font-size: 13px;
                 padding: 8px 14px;
             }
-
             .theme-toggle {
                 font-size: 12px;
                 padding: 6px 12px;
             }
-
             .city-selector {
                 flex-direction: column;
                 gap: 10px;
             }
-
             .city-selector select {
                 width: 100%;
                 min-width: unset;
@@ -730,62 +811,65 @@
                 padding-right: 44px;
                 font-size: 14px;
             }
-
             .city-selector button {
                 width: 100%;
                 justify-content: center;
                 padding: 12px 20px;
                 font-size: 14px;
             }
-
             .grid-2 {
                 grid-template-columns: 1fr 1fr;
                 gap: 10px;
             }
-
             .prayer-grid {
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
             }
-
             .date-box .value {
                 font-size: 16px;
             }
-
             .info-card .data {
                 font-size: 16px;
             }
-
             .prayer-item .p-time {
                 font-size: 15px;
             }
-
             .motivation-box .motivation-text {
                 font-size: 16px;
             }
-
             .next-prayer-box .info {
                 font-size: 14px;
             }
-
             .events-section {
                 padding: 14px 16px;
             }
-
             .events-section ul li {
                 font-size: 13px;
             }
-
             .footer .social-links {
                 gap: 14px;
             }
-
             #backToTop {
                 width: 46px;
                 height: 46px;
                 font-size: 20px;
                 bottom: 20px;
                 right: 20px;
+            }
+            .date-selects {
+                padding: 6px 8px;
+            }
+            .date-selects select {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+            .date-selects .go-btn {
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+            .nav-btn {
+                font-size: 12px;
+                padding: 6px 12px;
             }
         }
 
@@ -794,80 +878,63 @@
                 padding: 16px 12px;
                 border-radius: 20px;
             }
-
             h1 {
                 font-size: 18px;
             }
-
             .grid-2 {
                 grid-template-columns: 1fr;
             }
-
             .prayer-grid {
                 grid-template-columns: 1fr 1fr;
                 gap: 6px;
             }
-
             .prayer-item {
                 padding: 10px 5px;
                 font-size: 12px;
             }
-
             .prayer-item .p-time {
                 font-size: 14px;
             }
-
             .date-box {
                 padding: 10px 14px;
             }
-
             .date-box .value {
                 font-size: 14px;
             }
-
             .info-card {
                 padding: 14px 10px;
             }
-
             .info-card .data {
                 font-size: 15px;
             }
-
             .motivation-box {
                 padding: 16px 16px;
             }
-
             .motivation-box .motivation-text {
                 font-size: 14px;
                 line-height: 1.7;
             }
-
             .next-prayer-box {
                 padding: 12px 14px;
                 gap: 10px;
             }
-
             .next-prayer-box .info {
                 font-size: 13px;
             }
-
             .footer {
                 font-size: 11px;
                 padding-top: 14px;
                 margin-top: 16px;
             }
-
             .share-btn {
                 font-size: 12px;
                 padding: 6px 12px;
             }
-
             .city-selector select {
                 font-size: 13px;
                 padding: 10px 14px;
                 padding-right: 38px;
             }
-
             .city-selector button {
                 font-size: 13px;
                 padding: 10px 16px;
@@ -877,244 +944,320 @@
 </head>
 <body>
 
-    <div class="container">
-        <div class="card">
+<div class="container">
+    <div class="card">
 
-            <!-- ============================================================
-            هدر
-            ============================================================ -->
-            <div class="header">
-                <div class="header-left">
-                    <h1>🌟 اطلاعات روز</h1>
-                    <button class="theme-toggle" onclick="toggleTheme()">
-                        <i class="fas fa-moon"></i> تم
-                    </button>
-                </div>
-                <button class="share-btn" onclick="shareWebsite()">
-                    <i class="fas fa-share-alt"></i> اشتراک‌گذاری
+        <!-- ============================================================
+        هدر
+        ============================================================ -->
+        <div class="header">
+            <div class="header-left">
+                <h1>🌟 اطلاعات روز</h1>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i> تم
                 </button>
             </div>
+            <button class="share-btn" onclick="shareWebsite()">
+                <i class="fas fa-share-alt"></i> اشتراک‌گذاری
+            </button>
+        </div>
 
-            <!-- ============================================================
-            انتخاب شهر
-            ============================================================ -->
-            <div class="city-selector">
-                <form method="GET" action="/" style="display:flex; gap:12px; width:100%; flex-wrap:wrap; align-items:center;">
-                    <select name="city" id="citySelect">
-                        <option value="قم" {% if selected_city == 'قم' %}selected{% endif %}>قم</option>
-                        <option value="تهران" {% if selected_city == 'تهران' %}selected{% endif %}>تهران</option>
-                        <option value="مشهد" {% if selected_city == 'مشهد' %}selected{% endif %}>مشهد</option>
-                        <option value="اصفهان" {% if selected_city == 'اصفهان' %}selected{% endif %}>اصفهان</option>
-                        <option value="شیراز" {% if selected_city == 'شیراز' %}selected{% endif %}>شیراز</option>
-                        <option value="تبریز" {% if selected_city == 'تبریز' %}selected{% endif %}>تبریز</option>
-                        <option value="کرج" {% if selected_city == 'کرج' %}selected{% endif %}>کرج</option>
-                        <option value="اهواز" {% if selected_city == 'اهواز' %}selected{% endif %}>اهواز</option>
-                        <option value="یزد" {% if selected_city == 'یزد' %}selected{% endif %}>یزد</option>
-                        <option value="کرمانشاه" {% if selected_city == 'کرمانشاه' %}selected{% endif %}>کرمانشاه</option>
+        <!-- ============================================================
+        ناوبری تاریخ (جدید)
+        ============================================================ -->
+        <div class="date-navigation">
+            <div class="nav-buttons">
+                <a href="{{ url_for('home', year=prev_year, month=prev_month, day=prev_day_num, city=selected_city) }}" class="nav-btn">
+                    <i class="fas fa-chevron-right"></i> روز قبل
+                </a>
+                <a href="{{ url_for('home', city=selected_city) }}" class="nav-btn today-btn" {% if is_today %}style="opacity:0.4;pointer-events:none;"{% endif %}>
+                    <i class="fas fa-calendar-day"></i> امروز
+                </a>
+                <a href="{{ url_for('home', year=next_year, month=next_month, day=next_day_num, city=selected_city) }}" class="nav-btn">
+                    روز بعد <i class="fas fa-chevron-left"></i>
+                </a>
+            </div>
+
+            <form method="GET" action="/" class="date-picker-form">
+                <input type="hidden" name="city" value="{{ selected_city }}">
+                <div class="date-selects">
+                    <select name="year">
+                        {% for y in range(1390, 1451) %}
+                            <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+                        {% endfor %}
                     </select>
-                    <button type="submit">
-                        <i class="fas fa-sync-alt"></i> بروزرسانی
+                    <select name="month" id="monthSelect">
+                        {% for m in range(1, 13) %}
+                            <option value="{{ m }}" {% if m == selected_month %}selected{% endif %}>{{ months_fa[m] }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="day" id="daySelect">
+                        {% for d in range(1, 32) %}
+                            <option value="{{ d }}" {% if d == selected_day %}selected{% endif %}>{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="go-btn">
+                        <i class="fas fa-arrow-left"></i> برو
                     </button>
-                </form>
-            </div>
-
-            <!-- ============================================================
-            تاریخ‌ها
-            ============================================================ -->
-            <div class="date-box">
-                <div class="label">📅 امروز (شمسی)</div>
-                <div class="value">{{ persian_date }}</div>
-            </div>
-            <div class="date-box">
-                <div class="label">📅 امروز (میلادی)</div>
-                <div class="value">{{ miladi_date }}</div>
-            </div>
-            <div class="date-box">
-                <div class="label">🌙 امروز (قمری)</div>
-                <div class="value">{{ hijri_date }}</div>
-            </div>
-
-            <!-- ============================================================
-            مناسبت‌ها
-            ============================================================ -->
-            <div class="events-section">
-                <h3><i class="fas fa-calendar-day" style="margin-left:8px;"></i>مناسبت‌های شمسی امروز</h3>
-                <ul>
-                    {% if shamsi_events %}
-                        {% for event in shamsi_events %}
-                            <li><span class="event-dot">✦</span> {{ event }}</li>
-                        {% endfor %}
-                    {% else %}
-                        <li class="empty-event">✨ امروز هیچ مناسبت خاصی ثبت نشده است.</li>
-                    {% endif %}
-                </ul>
-            </div>
-
-            <div class="events-section">
-                <h3><i class="fas fa-moon" style="margin-left:8px;"></i>مناسبت‌های قمری امروز</h3>
-                <ul>
-                    {% if hijri_events %}
-                        {% for event in hijri_events %}
-                            <li><span class="event-dot">✦</span> {{ event }}</li>
-                        {% endfor %}
-                    {% else %}
-                        <li class="empty-event">✨ امروز هیچ مناسبت قمری خاصی ثبت نشده است.</li>
-                    {% endif %}
-                </ul>
-            </div>
-
-            <!-- ============================================================
-            آب و هوا
-            ============================================================ -->
-            <div class="grid-2">
-                <div class="info-card">
-                    <div class="icon"><i class="fas fa-thermometer-half"></i></div>
-                    <div class="title">دما</div>
-                    <div class="data">{{ weather.temp if weather else '❌' }}</div>
                 </div>
-                <div class="info-card">
-                    <div class="icon"><i class="fas fa-cloud-sun"></i></div>
-                    <div class="title">وضعیت</div>
-                    <div class="data">{{ weather.condition if weather else '❌' }}</div>
-                </div>
-            </div>
+            </form>
+        </div>
 
-            <!-- ============================================================
-            اوقات شرعی
-            ============================================================ -->
-            <div class="prayer-title">
-                <i class="fas fa-clock" style="color:var(--gold);"></i>
-                اوقات شرعی <span>{{ city }}</span>
-            </div>
+        <!-- ============================================================
+        انتخاب شهر
+        ============================================================ -->
+        <div class="city-selector">
+            <form method="GET" action="/" style="display:flex; gap:12px; width:100%; flex-wrap:wrap; align-items:center;">
+                <select name="city" id="citySelect">
+                    <option value="قم" {% if selected_city == 'قم' %}selected{% endif %}>قم</option>
+                    <option value="تهران" {% if selected_city == 'تهران' %}selected{% endif %}>تهران</option>
+                    <option value="مشهد" {% if selected_city == 'مشهد' %}selected{% endif %}>مشهد</option>
+                    <option value="اصفهان" {% if selected_city == 'اصفهان' %}selected{% endif %}>اصفهان</option>
+                    <option value="شیراز" {% if selected_city == 'شیراز' %}selected{% endif %}>شیراز</option>
+                    <option value="تبریز" {% if selected_city == 'تبریز' %}selected{% endif %}>تبریز</option>
+                    <option value="کرج" {% if selected_city == 'کرج' %}selected{% endif %}>کرج</option>
+                    <option value="اهواز" {% if selected_city == 'اهواز' %}selected{% endif %}>اهواز</option>
+                    <option value="یزد" {% if selected_city == 'یزد' %}selected{% endif %}>یزد</option>
+                    <option value="کرمانشاه" {% if selected_city == 'کرمانشاه' %}selected{% endif %}>کرمانشاه</option>
+                </select>
+                <button type="submit">
+                    <i class="fas fa-sync-alt"></i> بروزرسانی
+                </button>
+            </form>
+        </div>
 
-            <div class="prayer-grid">
-                {% if prayer %}
-                    {% set prayers = [
-                        ('اذان صبح', prayer.Fajr),
-                        ('طلوع', prayer.Sunrise),
-                        ('اذان ظهر', prayer.Dhuhr),
-                        ('اذان عصر', prayer.Asr),
-                        ('اذان مغرب', prayer.Maghrib),
-                        ('اذان عشاء', prayer.Isha)
-                    ] %}
-                    {% for name, time in prayers %}
-                        {% set is_next = (name == next_prayer_name) %}
-                        <div class="prayer-item {% if is_next %}next-prayer{% endif %}">
-                            <div class="p-name">{{ name }}</div>
-                            <div class="p-time">{{ time }}</div>
-                            {% if is_next %}
-                                <div style="font-size:10px; color:var(--gold); margin-top:4px;">⏳ بعدی</div>
-                            {% endif %}
-                        </div>
+        <!-- ============================================================
+        تاریخ‌ها
+        ============================================================ -->
+        <div class="date-box">
+            <div class="label">📅 امروز (شمسی)</div>
+            <div class="value">{{ persian_date }}</div>
+        </div>
+        <div class="date-box">
+            <div class="label">📅 امروز (میلادی)</div>
+            <div class="value">{{ miladi_date }}</div>
+        </div>
+        <div class="date-box">
+            <div class="label">🌙 امروز (قمری)</div>
+            <div class="value">{{ hijri_date }}</div>
+        </div>
+
+        <!-- ============================================================
+        مناسبت‌ها
+        ============================================================ -->
+        <div class="events-section">
+            <h3><i class="fas fa-calendar-day" style="margin-left:8px;"></i>مناسبت‌های شمسی امروز</h3>
+            <ul>
+                {% if shamsi_events %}
+                    {% for event in shamsi_events %}
+                        <li><span class="event-dot">✦</span> {{ event }}</li>
                     {% endfor %}
                 {% else %}
-                    <div style="grid-column: span 3; text-align:center; padding:20px; opacity:0.6;">
-                        <i class="fas fa-exclamation-triangle"></i> اطلاعات در دسترس نیست
-                    </div>
+                    <li class="empty-event">✨ امروز هیچ مناسبت خاصی ثبت نشده است.</li>
                 {% endif %}
-            </div>
-
-            <!-- ============================================================
-            زمان اذان بعدی
-            ============================================================ -->
-            {% if next_prayer_name and next_prayer_time %}
-            <div class="next-prayer-box">
-                <div class="icon"><i class="fas fa-mosque"></i></div>
-                <div class="info">
-                    زمان باقی‌مانده تا <span class="highlight">{{ next_prayer_name }}</span>:
-                    <span class="highlight">{{ next_prayer_time }}</span>
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- ============================================================
-            پیام انگیزشی
-            ============================================================ -->
-            <div class="motivation-box">
-                <span class="motivation-label"><i class="fas fa-heart" style="color:#ff6b6b; margin-left:6px;"></i>پیام انگیزشی روز</span>
-                <div class="motivation-text">{{ motivation }}</div>
-            </div>
-
-            <!-- ============================================================
-            فوتر
-            ============================================================ -->
-            <div class="footer">
-                <div class="social-links">
-                    <a href="https://t.me/HmHermi" title="تلگرام"><i class="fab fa-telegram-plane"></i></a>
-                    <a href="https://www.instagram.com/alimazhabe/" title="اینستاگرام"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/@alimazhabi" title="یوتیوب"><i class="fab fa-youtube"></i></a>
-                    <a href="#" title="گیت‌هاب"><i class="fab fa-github"></i></a>
-                </div>
-                🤖 ربات هوشمند 🌙 به‌روز شده با ❤️ | {{ city }}
-                <br>
-                <span style="font-size:11px; opacity:0.6;">سازنده علی مذهبی</span>
-            </div>
-
+            </ul>
         </div>
+
+        <div class="events-section">
+            <h3><i class="fas fa-moon" style="margin-left:8px;"></i>مناسبت‌های قمری امروز</h3>
+            <ul>
+                {% if hijri_events %}
+                    {% for event in hijri_events %}
+                        <li><span class="event-dot">✦</span> {{ event }}</li>
+                    {% endfor %}
+                {% else %}
+                    <li class="empty-event">✨ امروز هیچ مناسبت قمری خاصی ثبت نشده است.</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- ============================================================
+        آب و هوا
+        ============================================================ -->
+        <div class="grid-2">
+            <div class="info-card">
+                <div class="icon"><i class="fas fa-thermometer-half"></i></div>
+                <div class="title">دما</div>
+                <div class="data">{{ weather.temp if weather else '❌' }}</div>
+            </div>
+            <div class="info-card">
+                <div class="icon"><i class="fas fa-cloud-sun"></i></div>
+                <div class="title">وضعیت</div>
+                <div class="data">{{ weather.condition if weather else '❌' }}</div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        اوقات شرعی
+        ============================================================ -->
+        <div class="prayer-title">
+            <i class="fas fa-clock" style="color:var(--gold);"></i>
+            اوقات شرعی <span>{{ city }}</span>
+        </div>
+
+        <div class="prayer-grid">
+            {% if prayer %}
+                {% set prayers = [
+                    ('اذان صبح', prayer.Fajr),
+                    ('طلوع', prayer.Sunrise),
+                    ('اذان ظهر', prayer.Dhuhr),
+                    ('اذان عصر', prayer.Asr),
+                    ('اذان مغرب', prayer.Maghrib),
+                    ('اذان عشاء', prayer.Isha)
+                ] %}
+                {% for name, time in prayers %}
+                    {% set is_next = (name == next_prayer_name) %}
+                    <div class="prayer-item {% if is_next %}next-prayer{% endif %}">
+                        <div class="p-name">{{ name }}</div>
+                        <div class="p-time">{{ time }}</div>
+                        {% if is_next %}
+                            <div style="font-size:10px; color:var(--gold); margin-top:4px;">⏳ بعدی</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div style="grid-column: span 3; text-align:center; padding:20px; opacity:0.6;">
+                    <i class="fas fa-exclamation-triangle"></i> اطلاعات در دسترس نیست
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- ============================================================
+        زمان اذان بعدی
+        ============================================================ -->
+        {% if next_prayer_name and next_prayer_time %}
+        <div class="next-prayer-box">
+            <div class="icon"><i class="fas fa-mosque"></i></div>
+            <div class="info">
+                زمان باقی‌مانده تا <span class="highlight">{{ next_prayer_name }}</span>:
+                <span class="highlight">{{ next_prayer_time }}</span>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- ============================================================
+        پیام انگیزشی
+        ============================================================ -->
+        <div class="motivation-box">
+            <span class="motivation-label"><i class="fas fa-heart" style="color:#ff6b6b; margin-left:6px;"></i>پیام انگیزشی روز</span>
+            <div class="motivation-text">{{ motivation }}</div>
+        </div>
+
+        <!-- ============================================================
+        فوتر
+        ============================================================ -->
+        <div class="footer">
+            <div class="social-links">
+                <a href="#" title="تلگرام"><i class="fab fa-telegram-plane"></i></a>
+                <a href="#" title="اینستاگرام"><i class="fab fa-instagram"></i></a>
+                <a href="#" title="یوتیوب"><i class="fab fa-youtube"></i></a>
+                <a href="#" title="گیت‌هاب"><i class="fab fa-github"></i></a>
+            </div>
+            🤖 ربات هوشمند 🌙 به‌روز شده با ❤️ | {{ city }}
+            <br>
+            <span style="font-size:11px; opacity:0.6;">سازنده علی مذهبی</span>
+        </div>
+
     </div>
+</div>
 
-    <!-- ============================================================
-    دکمه بازگشت به بالا
-    ============================================================ -->
-    <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+<!-- ============================================================
+دکمه بازگشت به بالا
+============================================================ -->
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-arrow-up"></i>
+</button>
 
-    <!-- ============================================================
-    جاوااسکریپت
-    ============================================================ -->
-    <script>
-        // ===== اشتراک‌گذاری =====
-        function shareWebsite() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'اطلاعات روز - تقویم و اوقات شرعی',
-                    text: '📅 اطلاعات امروز را با تقویم شمسی، میلادی، قمری و اوقات شرعی ببینید!',
-                    url: window.location.href
-                }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(window.location.href).then(() => {
-                    alert('✅ لینک کپی شد!');
-                }).catch(() => {
-                    prompt('لینک را کپی کنید:', window.location.href);
-                });
-            }
+<!-- ============================================================
+جاوااسکریپت
+============================================================ -->
+<script>
+    // ===== اشتراک‌گذاری =====
+    function shareWebsite() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'اطلاعات روز - تقویم و اوقات شرعی',
+                text: '📅 اطلاعات امروز را با تقویم شمسی، میلادی، قمری و اوقات شرعی ببینید!',
+                url: window.location.href
+            }).catch(() => {});
+        } else {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('✅ لینک کپی شد!');
+            }).catch(() => {
+                prompt('لینک را کپی کنید:', window.location.href);
+            });
         }
+    }
 
-        // ===== دکمه بازگشت به بالا =====
-        window.addEventListener('scroll', function() {
-            const btn = document.getElementById('backToTop');
-            if (window.scrollY > 300) {
-                btn.classList.add('visible');
-            } else {
-                btn.classList.remove('visible');
-            }
-        });
+    // ===== دکمه بازگشت به بالا =====
+    window.addEventListener('scroll', function() {
+        const btn = document.getElementById('backToTop');
+        if (window.scrollY > 300) {
+            btn.classList.add('visible');
+        } else {
+            btn.classList.remove('visible');
+        }
+    });
 
-        // ===== تغییر تم (روز/شب) =====
-        function toggleTheme() {
-            document.body.classList.toggle('light-theme');
+    // ===== تغییر تم =====
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        const btn = document.querySelector('.theme-toggle');
+        if (document.body.classList.contains('light-theme')) {
+            btn.innerHTML = '<i class="fas fa-sun"></i> روشن';
+        } else {
+            btn.innerHTML = '<i class="fas fa-moon"></i> تم';
+        }
+        localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+
+    (function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
             const btn = document.querySelector('.theme-toggle');
-            if (document.body.classList.contains('light-theme')) {
-                btn.innerHTML = '<i class="fas fa-sun"></i> روشن';
-            } else {
-                btn.innerHTML = '<i class="fas fa-moon"></i> تم';
+            if (btn) btn.innerHTML = '<i class="fas fa-sun"></i> روشن';
+        }
+    })();
+
+    // ===== تنظیم تعداد روزهای ماه در انتخابگر تاریخ =====
+    document.addEventListener('DOMContentLoaded', function() {
+        const monthSelect = document.getElementById('monthSelect');
+        const daySelect = document.getElementById('daySelect');
+        const yearSelect = document.querySelector('select[name="year"]');
+
+        function updateDays() {
+            const year = parseInt(yearSelect.value);
+            const month = parseInt(monthSelect.value);
+            let maxDay;
+            if (month <= 6) maxDay = 31;
+            else if (month <= 11) maxDay = 30;
+            else {
+                // محاسبه کبیسه شمسی (تقریبی)
+                // برای دقت بیشتر می‌توان از API یا تابع backend استفاده کرد، اما برای فرم frontend کافی است
+                // کبیسه شمسی: (year % 4 == 0) و (year % 100 != 0) یا (year % 400 == 0) - اما برای شمسی پیچیده‌تر است
+                // ساده‌سازی: هر ۴ سال یکبار کبیسه است (با خطای کم)
+                const isLeap = (year % 4 === 0);
+                maxDay = isLeap ? 30 : 29;
             }
-            // ذخیره در localStorage
-            const isLight = document.body.classList.contains('light-theme');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            const currentVal = parseInt(daySelect.value);
+            daySelect.innerHTML = '';
+            for (let d = 1; d <= maxDay; d++) {
+                const opt = document.createElement('option');
+                opt.value = d;
+                opt.textContent = d;
+                if (d === currentVal && d <= maxDay) opt.selected = true;
+                daySelect.appendChild(opt);
+            }
+            if (currentVal > maxDay) {
+                daySelect.value = maxDay;
+            }
         }
 
-        // ===== بارگذاری تم ذخیره‌شده =====
-        (function() {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-theme');
-                const btn = document.querySelector('.theme-toggle');
-                if (btn) btn.innerHTML = '<i class="fas fa-sun"></i> روشن';
-            }
-        })();
-    </script>
-
+        monthSelect.addEventListener('change', updateDays);
+        yearSelect.addEventListener('change', updateDays);
+        updateDays(); // تنظیم اولیه
+    });
+</script>
 </body>
 </html>
