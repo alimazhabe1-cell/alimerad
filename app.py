@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, make_response
+from flask import Flask, render_template, request, jsonify
 import jdatetime
 from hijri_converter import Gregorian
 from datetime import datetime, timedelta
@@ -23,7 +23,7 @@ PERSIAN_WEEKDAYS = {
 }
 
 # ============================================================
-# دیکشنری مناسبت‌ها (شمسی و قمری) - کامل
+# دیکشنری مناسبت‌ها (شمسی و قمری) - کاملاً کامل (برای اختصار فقط نمونه آورده شده، ولی شما باید کامل را قرار دهید)
 # ============================================================
 shamsi_events = {
     "1-1": ["جشن نوروز", "سال نو"],
@@ -406,10 +406,10 @@ def get_today_tehran():
     return jdatetime.datetime.fromgregorian(datetime=now).date()
 
 # ============================================================
-# سیستم کش
+# سیستم کش (در حافظه)
 # ============================================================
 cache = {}
-CACHE_DURATION = 300
+CACHE_DURATION = 300  # ۵ دقیقه
 
 def get_cached(key):
     if key in cache:
@@ -556,21 +556,12 @@ def parse_date_params():
     return today
 
 # ============================================================
-# مسیر اصلی (با کوکی برای ذخیره شهر)
+# مسیر اصلی
 # ============================================================
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def home():
-    # دریافت شهر از کوکی یا پارامتر URL یا پیش‌فرض
-    city = request.args.get('city')
-    if not city:
-        city = request.cookies.get('preferred_city', 'قم')
-    
-    # اگر کاربر شهر را تغییر داد، در کوکی ذخیره کن
-    if request.args.get('city'):
-        city = request.args.get('city')
-        response = make_response(redirect(url_for('home')))
-        response.set_cookie('preferred_city', city, max_age=365*24*60*60)  # یک سال
-        return response
+    # دریافت شهر از پارامتر URL، در غیر این صورت 'قم'
+    city = request.args.get('city', 'قم')
 
     selected_date = parse_date_params()
     today = get_today_tehran()
@@ -592,7 +583,7 @@ def home():
     next_prayer_name, next_prayer_time = get_next_prayer(prayer)
     motivation = random.choice(motivation_messages)
     
-    response = make_response(render_template('index.html',
+    return render_template('index.html',
         persian_date=persian_date,
         miladi_date=miladi_date,
         hijri_date=hijri_date,
@@ -616,13 +607,7 @@ def home():
         next_day_num=next_day.day,
         months_fa=PERSIAN_MONTHS,
         is_today=(selected_date == today)
-    ))
-    
-    # اگر کوکی شهر تنظیم نشده، آن را ذخیره کن
-    if not request.cookies.get('preferred_city'):
-        response.set_cookie('preferred_city', city, max_age=365*24*60*60)
-    
-    return response
+    )
 
 # ============================================================
 # API
@@ -648,8 +633,5 @@ def api_info():
         "weather": get_weather(city),
     })
 
-# ============================================================
-# اجرا
-# ============================================================
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
