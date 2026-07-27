@@ -190,6 +190,7 @@
             animation: pulse 2s infinite;
         }
 
+        /* ===== هدر با لوگو ===== */
         .header {
             display: flex;
             justify-content: space-between;
@@ -206,6 +207,16 @@
             align-items: center;
             gap: 15px;
             flex-wrap: wrap;
+        }
+
+        .site-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 4px;
+            border: 2px solid var(--gold);
         }
 
         h1 {
@@ -780,6 +791,7 @@
             .header-left { justify-content: space-between; width: 100%; }
             .share-btn { align-self: flex-start; font-size: 13px; padding: 8px 14px; }
             .theme-toggle { font-size: 12px; padding: 6px 12px; }
+            .site-logo { width: 40px; height: 40px; }
             .city-selector { flex-direction: column; gap: 10px; }
             .city-selector select { width: 100%; min-width: unset; padding: 12px 18px; padding-right: 44px; font-size: 14px; }
             .city-selector button { width: 100%; justify-content: center; padding: 12px 20px; font-size: 14px; }
@@ -803,6 +815,7 @@
         @media (max-width: 400px) {
             .card { padding: 16px 12px; border-radius: 20px; }
             h1 { font-size: 18px; }
+            .site-logo { width: 32px; height: 32px; }
             .grid-2 { grid-template-columns: 1fr; }
             .prayer-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
             .prayer-item { padding: 10px 5px; font-size: 12px; }
@@ -828,11 +841,14 @@
     <div class="card">
 
         <!-- ============================================================
-        هدر
+        هدر با لوگو
         ============================================================ -->
         <div class="header">
             <div class="header-left">
-                <h1>🌟 اطلاعات روز</h1>
+                <img src="{{ url_for('static', filename='logo.png') }}" 
+                     alt="لوگو" 
+                     class="site-logo">
+                <h1>اطلاعات روز</h1>
                 <button class="theme-toggle" onclick="toggleTheme()">
                     <i class="fas fa-moon"></i> تم
                 </button>
@@ -1028,9 +1044,10 @@
         ============================================================ -->
         <div class="footer">
             <div class="social-links">
-                    <a href="https://t.me/HmHermi" title="تلگرام"><i class="fab fa-telegram-plane"></i></a>
-                    <a href="https://www.instagram.com/alimazhabe/" title="اینستاگرام"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/@alimazhabi" title="یوتیوب"><i class="fab fa-youtube"></i></a>
+                <a href="#" title="تلگرام"><i class="fab fa-telegram-plane"></i></a>
+                <a href="#" title="اینستاگرام"><i class="fab fa-instagram"></i></a>
+                <a href="#" title="یوتیوب"><i class="fab fa-youtube"></i></a>
+                <a href="#" title="گیت‌هاب"><i class="fab fa-github"></i></a>
             </div>
             🤖 ربات هوشمند 🌙 به‌روز شده با ❤️ | {{ city }}
             <br>
@@ -1051,24 +1068,24 @@
 جاوااسکریپت
 ============================================================ -->
 <script>
-    // ===== اشتراک‌گذاری =====
-function shareWebsite() {
-    const link = 'https://alimerad.onrender.com/';
-    
-    if (navigator.share) {
-        navigator.share({
-            title: 'اطلاعات روز - تقویم و اوقات شرعی',
-            text: '📅 اطلاعات امروز را با تقویم شمسی، میلادی، قمری و اوقات شرعی ببینید!',
-            url: link
-        }).catch(() => {});
-    } else {
-        navigator.clipboard.writeText(link).then(() => {
-            alert('✅ لینک کپی شد!');
-        }).catch(() => {
-            prompt('لینک را کپی کنید:', link);
-        });
+    // ===== اشتراک‌گذاری با لینک ثابت =====
+    function shareWebsite() {
+        const link = 'https://alimerad.onrender.com/';
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'اطلاعات روز - تقویم و اوقات شرعی',
+                text: '📅 اطلاعات امروز را با تقویم شمسی، میلادی، قمری و اوقات شرعی ببینید!',
+                url: link
+            }).catch(() => {});
+        } else {
+            navigator.clipboard.writeText(link).then(() => {
+                alert('✅ لینک کپی شد!');
+            }).catch(() => {
+                prompt('لینک را کپی کنید:', link);
+            });
+        }
     }
-}
 
     // ===== دکمه بازگشت به بالا =====
     window.addEventListener('scroll', function() {
@@ -1110,14 +1127,10 @@ function shareWebsite() {
         // بازیابی شهر ذخیره‌شده
         const savedCity = localStorage.getItem('preferredCity');
         if (savedCity && !new URLSearchParams(window.location.search).get('city')) {
-            // اگر شهری در localStorage هست و در URL نیست، آن را انتخاب کن
             const options = citySelect.options;
             for (let i = 0; i < options.length; i++) {
                 if (options[i].value === savedCity) {
                     options[i].selected = true;
-                    // دکمه بروزرسانی را کلیک کن تا صفحه با شهر جدید بارگذاری شود
-                    // اما از آنجا که ممکن است فرم را به صورت خودکار ارسال کنیم، بهتر است کاربر خودش انتخاب کند.
-                    // برای راحتی، فقط مقدار select را تنظیم می‌کنیم و کاربر خودش بروزرسانی می‌کند.
                     break;
                 }
             }
@@ -1125,7 +1138,6 @@ function shareWebsite() {
 
         // ذخیره شهر هنگام کلیک بروزرسانی
         updateBtn.addEventListener('click', function(e) {
-            // قبل از ارسال فرم، شهر را ذخیره کن
             const selectedCity = citySelect.value;
             localStorage.setItem('preferredCity', selectedCity);
         });
@@ -1144,7 +1156,6 @@ function shareWebsite() {
             if (month <= 6) maxDay = 31;
             else if (month <= 11) maxDay = 30;
             else {
-                // محاسبه کبیسه شمسی (تقریبی)
                 const isLeap = (year % 4 === 0);
                 maxDay = isLeap ? 30 : 29;
             }
@@ -1165,7 +1176,7 @@ function shareWebsite() {
         if (monthSelect && daySelect && yearSelect) {
             monthSelect.addEventListener('change', updateDays);
             yearSelect.addEventListener('change', updateDays);
-            updateDays(); // تنظیم اولیه
+            updateDays();
         }
     });
 </script>
