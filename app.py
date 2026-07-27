@@ -14,7 +14,7 @@ import random
 import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key-here'  # در تولید این را با متغیر محیطی جایگزین کنید
+app.config['SECRET_KEY'] = 'your-secret-key-here'  # در تولید با متغیر محیطی جایگزین کنید
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -492,101 +492,7 @@ def get_cached(key):
 
 def set_cached(key, value):
     cache[key] = (value, datetime.now())
-# ============================================================
-# مسیرهای احراز هویت
-# ============================================================
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash('ثبت‌نام با موفقیت انجام شد. حالا می‌توانید وارد شوید.', 'success')
-        return redirect(url_for('login'))
-    return render_template('register.html', form=form)
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user and user.check_password(form.password.data):
-            login_user(user)
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
-        else:
-            flash('نام کاربری یا رمز عبور اشتباه است.', 'danger')
-    return render_template('login.html', form=form)
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash('شما خارج شدید.', 'info')
-    return redirect(url_for('home'))
-
-@app.route('/profile', methods=['GET', 'POST'])
-@login_required
-def profile():
-    form = ProfileForm(obj=current_user)
-    if form.validate_on_submit():
-        current_user.preferred_city = form.preferred_city.data
-        db.session.commit()
-        flash('تنظیمات با موفقیت ذخیره شد.', 'success')
-        return redirect(url_for('profile'))
-    return render_template('profile.html', form=form)
-
-# ============================================================
-# مسیر اصلی (با استفاده از شهر کاربر در صورت ورود)
-# ============================================================
-@app.route('/')
-def home():
-    # دریافت شهر از پارامتر URL، اگر نبود از شهر کاربر (در صورت ورود) و در غیر این صورت 'قم'
-    city = request.args.get('city')
-    if not city and current_user.is_authenticated:
-        city = current_user.preferred_city
-    if not city:
-        city = 'قم'
-
-    selected_date = parse_date_params()
-    today = get_today_tehran()
-    
-    # ... (بقیه کدهای home مانند قبل، فقط city را از پارامتر get نمی‌گیریم بلکه از متغیر city استفاده می‌کنیم)
-    # دقت کنید که selected_city را هم به قالب بفرستید.
-    
-    # ... (سایر متغیرها)
-
-    return render_template('index.html',
-        persian_date=persian_date,
-        miladi_date=miladi_date,
-        hijri_date=hijri_date,
-        prayer=prayer,
-        weather=weather,
-        shamsi_events=shamsi_events_list,
-        hijri_events=hijri_events_list,
-        next_prayer_name=next_prayer_name,
-        next_prayer_time=next_prayer_time,
-        motivation=motivation,
-        city=city,
-        selected_city=city,
-        selected_year=selected_date.year,
-        selected_month=selected_date.month,
-        selected_day=selected_date.day,
-        prev_year=prev_day.year,
-        prev_month=prev_day.month,
-        prev_day_num=prev_day.day,
-        next_year=next_day.year,
-        next_month=next_day.month,
-        next_day_num=next_day.day,
-        months_fa=PERSIAN_MONTHS,
-        is_today=(selected_date == today)
-    )
 # ============================================================
 # توابع اصلی
 # ============================================================
@@ -644,7 +550,6 @@ def get_persian_date(today):
     year = str(today.year).replace("0", "۰").replace("1", "۱").replace("2", "۲").replace("3", "۳").replace("4", "۴").replace("5", "۵").replace("6", "۶").replace("7", "۷").replace("8", "۸").replace("9", "۹")
     return f"{weekday} {day} {month} {year}"
 
-# ===== تابع جدید: هم رشته و هم شیء قمری اصلاح‌شده =====
 def get_hijri_date_and_obj(gregorian_date):
     """
     تبدیل تاریخ میلادی به قمری با یک روز تعدیل (کم کردن یک روز)
@@ -661,7 +566,6 @@ def get_hijri_date_and_obj(gregorian_date):
             if month == 0:
                 month = 12
                 year -= 1
-            # تعداد روزهای ماه قبل (تقریبی)
             if month in [1, 3, 5, 7, 9, 11]:
                 day = 30
             else:
@@ -705,7 +609,6 @@ def get_next_prayer(prayer_times):
             pass
     return prayers[0][0], "فردا"
 
-# ===== توابع کمکی برای پیمایش تاریخ =====
 def get_days_in_month(year, month):
     """تعداد روزهای یک ماه شمسی"""
     if month <= 6:
@@ -713,7 +616,6 @@ def get_days_in_month(year, month):
     elif month <= 11:
         return 30
     else:
-        # اسفند: ۲۹ روز در سال عادی، ۳۰ روز در سال کبیسه
         return 30 if jdatetime.date(year, 12, 1).is_leap() else 29
 
 def parse_date_params():
@@ -732,14 +634,69 @@ def parse_date_params():
     return today
 
 # ============================================================
-# مسیرهای وب‌سایت
+# مسیرهای احراز هویت
 # ============================================================
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('ثبت‌نام با موفقیت انجام شد. حالا می‌توانید وارد شوید.', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('home'))
+        else:
+            flash('نام کاربری یا رمز عبور اشتباه است.', 'danger')
+    return render_template('login.html', form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('شما خارج شدید.', 'info')
+    return redirect(url_for('home'))
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = ProfileForm(obj=current_user)
+    if form.validate_on_submit():
+        current_user.preferred_city = form.preferred_city.data
+        db.session.commit()
+        flash('تنظیمات با موفقیت ذخیره شد.', 'success')
+        return redirect(url_for('profile'))
+    return render_template('profile.html', form=form)
+
+# ============================================================
+# مسیر اصلی
+# ============================================================
 @app.route('/')
 def home():
+    # دریافت شهر: اول از پارامتر URL، بعد از ترجیح کاربر (اگر وارد شده باشد)، در غیر این صورت 'قم'
+    city = request.args.get('city')
+    if not city and current_user.is_authenticated:
+        city = current_user.preferred_city
+    if not city:
+        city = 'قم'
+
     selected_date = parse_date_params()
     today = get_today_tehran()
-    city = request.args.get('city', 'قم')
     
     prev_day = selected_date - timedelta(days=1)
     next_day = selected_date + timedelta(days=1)
@@ -757,8 +714,6 @@ def home():
         hijri_events_list = get_hijri_events(hijri_obj["month"], hijri_obj["day"])
     next_prayer_name, next_prayer_time = get_next_prayer(prayer)
     motivation = random.choice(motivation_messages)
-    
-    months_fa = PERSIAN_MONTHS
     
     return render_template('index.html',
         persian_date=persian_date,
@@ -782,10 +737,13 @@ def home():
         next_year=next_day.year,
         next_month=next_day.month,
         next_day_num=next_day.day,
-        months_fa=months_fa,
+        months_fa=PERSIAN_MONTHS,
         is_today=(selected_date == today)
     )
 
+# ============================================================
+# API
+# ============================================================
 @app.route('/api/info')
 def api_info():
     today = get_today_tehran()
@@ -808,4 +766,6 @@ def api_info():
     })
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True, host='0.0.0.0', port=5000)
