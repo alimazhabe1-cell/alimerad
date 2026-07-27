@@ -550,7 +550,7 @@ def home():
     # اطلاعات
     prayer = get_prayer_times(city)
     weather = get_weather(city)
-    prices = get_gold_usd_prices()
+    # قیمت طلا و دلار (حذف شد)
     shamsi_events_list = get_shamsi_events(today.year, today.month, today.day)
     hijri_obj = Gregorian(gregorian.year, gregorian.month, gregorian.day).to_hijri()
     hijri_events_list = get_hijri_events(hijri_obj.month, hijri_obj.day)
@@ -563,7 +563,7 @@ def home():
         hijri_date=hijri_date,
         prayer=prayer,
         weather=weather,
-        prices=prices,
+        # prices حذف شد
         shamsi_events=shamsi_events_list,
         hijri_events=hijri_events_list,
         next_prayer_name=next_prayer_name,
@@ -592,7 +592,7 @@ def api_info():
         "prayer": prayer,
         "next_prayer": {"name": next_name, "remaining": next_time} if next_name else None,
         "weather": get_weather(city),
-        "prices": get_gold_usd_prices()
+        # prices حذف شد
     })
 
 if __name__ == '__main__':
