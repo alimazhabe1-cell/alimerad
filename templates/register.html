@@ -5,16 +5,32 @@
     <form method="POST" action="{{ url_for('register') }}">
         {{ form.hidden_tag() }}
         <div class="form-group">
-            {{ form.username.label }} {{ form.username(class="form-control") }}
+            {{ form.username.label }}
+            {{ form.username(class="form-control") }}
+            {% for error in form.username.errors %}
+                <small style="color:#ff6b6b;">{{ error }}</small>
+            {% endfor %}
         </div>
         <div class="form-group">
-            {{ form.email.label }} {{ form.email(class="form-control") }}
+            {{ form.email.label }}
+            {{ form.email(class="form-control") }}
+            {% for error in form.email.errors %}
+                <small style="color:#ff6b6b;">{{ error }}</small>
+            {% endfor %}
         </div>
         <div class="form-group">
-            {{ form.password.label }} {{ form.password(class="form-control") }}
+            {{ form.password.label }}
+            {{ form.password(class="form-control") }}
+            {% for error in form.password.errors %}
+                <small style="color:#ff6b6b;">{{ error }}</small>
+            {% endfor %}
         </div>
         <div class="form-group">
-            {{ form.confirm_password.label }} {{ form.confirm_password(class="form-control") }}
+            {{ form.confirm_password.label }}
+            {{ form.confirm_password(class="form-control") }}
+            {% for error in form.confirm_password.errors %}
+                <small style="color:#ff6b6b;">{{ error }}</small>
+            {% endfor %}
         </div>
         {{ form.submit(class="btn btn-primary") }}
     </form>
