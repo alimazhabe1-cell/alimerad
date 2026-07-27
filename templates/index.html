@@ -109,7 +109,6 @@
             background: rgba(0, 0, 0, 0.12);
         }
 
-        /* ===== ناوبری تاریخ (جدید) ===== */
         body.light-theme .date-navigation {
             border-color: rgba(0, 0, 0, 0.06);
         }
@@ -136,6 +135,15 @@
         body.light-theme .date-selects select option {
             background: #fff;
             color: #1a1a2e;
+        }
+
+        body.light-theme .user-section a {
+            background: rgba(0, 0, 0, 0.04);
+            color: #1a1a2e;
+        }
+
+        body.light-theme .user-section a:hover {
+            background: rgba(0, 0, 0, 0.10);
         }
 
         .container {
@@ -260,7 +268,37 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* ===== ناوبری تاریخ ===== */
+        /* بخش کاربر */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .user-greeting {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .user-section a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        .user-section a:hover {
+            background: rgba(255, 255, 255, 0.16);
+        }
+        .user-section .logout-link:hover {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff4444;
+        }
+
+        /* ناوبری تاریخ */
         .date-navigation {
             margin: 15px 0 20px 0;
             padding: 12px 0;
@@ -366,7 +404,7 @@
             transform: scale(1.04);
         }
 
-        /* ===== شهر ===== */
+        /* شهر */
         .city-selector {
             margin-bottom: 22px;
             display: flex;
@@ -433,7 +471,7 @@
             transform: scale(0.97);
         }
 
-        /* ===== تاریخ‌ها ===== */
+        /* تاریخ‌ها */
         .date-box {
             background: rgba(0, 0, 0, 0.20);
             border-radius: 16px;
@@ -461,7 +499,7 @@
             display: inline-block;
         }
 
-        /* ===== مناسبت‌ها ===== */
+        /* مناسبت‌ها */
         .events-section {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 16px;
@@ -509,7 +547,7 @@
             font-weight: 300;
         }
 
-        /* ===== آب و هوا ===== */
+        /* آب و هوا */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -555,7 +593,7 @@
             margin-top: 2px;
         }
 
-        /* ===== اوقات شرعی ===== */
+        /* اوقات شرعی */
         .prayer-title {
             font-size: 19px;
             font-weight: 700;
@@ -661,7 +699,7 @@
             color: var(--gold);
         }
 
-        /* ===== پیام انگیزشی ===== */
+        /* پیام انگیزشی */
         .motivation-box {
             background: linear-gradient(135deg, rgba(247, 151, 30, 0.08), rgba(255, 210, 0, 0.03));
             border: 1px solid rgba(255, 210, 0, 0.12);
@@ -702,7 +740,7 @@
             z-index: 1;
         }
 
-        /* ===== فوتر ===== */
+        /* فوتر */
         .footer {
             text-align: center;
             margin-top: 22px;
@@ -773,172 +811,55 @@
             transform: scale(0.92);
         }
 
-        /* ===== واکنش‌گرا ===== */
+        /* واکنش‌گرا */
         @media (max-width: 768px) {
-            .card {
-                padding: 22px 16px;
-                border-radius: 24px;
-            }
-            h1 {
-                font-size: 22px;
-            }
-            .header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-            }
-            .header-left {
-                justify-content: space-between;
-                width: 100%;
-            }
-            .share-btn {
-                align-self: flex-start;
-                font-size: 13px;
-                padding: 8px 14px;
-            }
-            .theme-toggle {
-                font-size: 12px;
-                padding: 6px 12px;
-            }
-            .city-selector {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .city-selector select {
-                width: 100%;
-                min-width: unset;
-                padding: 12px 18px;
-                padding-right: 44px;
-                font-size: 14px;
-            }
-            .city-selector button {
-                width: 100%;
-                justify-content: center;
-                padding: 12px 20px;
-                font-size: 14px;
-            }
-            .grid-2 {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-            .prayer-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-            .date-box .value {
-                font-size: 16px;
-            }
-            .info-card .data {
-                font-size: 16px;
-            }
-            .prayer-item .p-time {
-                font-size: 15px;
-            }
-            .motivation-box .motivation-text {
-                font-size: 16px;
-            }
-            .next-prayer-box .info {
-                font-size: 14px;
-            }
-            .events-section {
-                padding: 14px 16px;
-            }
-            .events-section ul li {
-                font-size: 13px;
-            }
-            .footer .social-links {
-                gap: 14px;
-            }
-            #backToTop {
-                width: 46px;
-                height: 46px;
-                font-size: 20px;
-                bottom: 20px;
-                right: 20px;
-            }
-            .date-selects {
-                padding: 6px 8px;
-            }
-            .date-selects select {
-                font-size: 12px;
-                padding: 4px 8px;
-            }
-            .date-selects .go-btn {
-                font-size: 12px;
-                padding: 4px 12px;
-            }
-            .nav-btn {
-                font-size: 12px;
-                padding: 6px 12px;
-            }
+            .card { padding: 22px 16px; border-radius: 24px; }
+            h1 { font-size: 22px; }
+            .header { flex-direction: column; align-items: stretch; gap: 10px; }
+            .header-left { justify-content: space-between; width: 100%; }
+            .share-btn { align-self: flex-start; font-size: 13px; padding: 8px 14px; }
+            .theme-toggle { font-size: 12px; padding: 6px 12px; }
+            .city-selector { flex-direction: column; gap: 10px; }
+            .city-selector select { width: 100%; min-width: unset; padding: 12px 18px; padding-right: 44px; font-size: 14px; }
+            .city-selector button { width: 100%; justify-content: center; padding: 12px 20px; font-size: 14px; }
+            .grid-2 { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .prayer-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .date-box .value { font-size: 16px; }
+            .info-card .data { font-size: 16px; }
+            .prayer-item .p-time { font-size: 15px; }
+            .motivation-box .motivation-text { font-size: 16px; }
+            .next-prayer-box .info { font-size: 14px; }
+            .events-section { padding: 14px 16px; }
+            .events-section ul li { font-size: 13px; }
+            .footer .social-links { gap: 14px; }
+            #backToTop { width: 46px; height: 46px; font-size: 20px; bottom: 20px; right: 20px; }
+            .date-selects { padding: 6px 8px; }
+            .date-selects select { font-size: 12px; padding: 4px 8px; }
+            .date-selects .go-btn { font-size: 12px; padding: 4px 12px; }
+            .nav-btn { font-size: 12px; padding: 6px 12px; }
+            .user-section a { font-size: 12px; padding: 4px 10px; }
+            .user-greeting { font-size: 12px; }
         }
 
         @media (max-width: 400px) {
-            .card {
-                padding: 16px 12px;
-                border-radius: 20px;
-            }
-            h1 {
-                font-size: 18px;
-            }
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-            .prayer-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 6px;
-            }
-            .prayer-item {
-                padding: 10px 5px;
-                font-size: 12px;
-            }
-            .prayer-item .p-time {
-                font-size: 14px;
-            }
-            .date-box {
-                padding: 10px 14px;
-            }
-            .date-box .value {
-                font-size: 14px;
-            }
-            .info-card {
-                padding: 14px 10px;
-            }
-            .info-card .data {
-                font-size: 15px;
-            }
-            .motivation-box {
-                padding: 16px 16px;
-            }
-            .motivation-box .motivation-text {
-                font-size: 14px;
-                line-height: 1.7;
-            }
-            .next-prayer-box {
-                padding: 12px 14px;
-                gap: 10px;
-            }
-            .next-prayer-box .info {
-                font-size: 13px;
-            }
-            .footer {
-                font-size: 11px;
-                padding-top: 14px;
-                margin-top: 16px;
-            }
-            .share-btn {
-                font-size: 12px;
-                padding: 6px 12px;
-            }
-            .city-selector select {
-                font-size: 13px;
-                padding: 10px 14px;
-                padding-right: 38px;
-            }
-            .city-selector button {
-                font-size: 13px;
-                padding: 10px 16px;
-            }
+            .card { padding: 16px 12px; border-radius: 20px; }
+            h1 { font-size: 18px; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .prayer-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+            .prayer-item { padding: 10px 5px; font-size: 12px; }
+            .prayer-item .p-time { font-size: 14px; }
+            .date-box { padding: 10px 14px; }
+            .date-box .value { font-size: 14px; }
+            .info-card { padding: 14px 10px; }
+            .info-card .data { font-size: 15px; }
+            .motivation-box { padding: 16px 16px; }
+            .motivation-box .motivation-text { font-size: 14px; line-height: 1.7; }
+            .next-prayer-box { padding: 12px 14px; gap: 10px; }
+            .next-prayer-box .info { font-size: 13px; }
+            .footer { font-size: 11px; padding-top: 14px; margin-top: 16px; }
+            .share-btn { font-size: 12px; padding: 6px 12px; }
+            .city-selector select { font-size: 13px; padding: 10px 14px; padding-right: 38px; }
+            .city-selector button { font-size: 13px; padding: 10px 16px; }
         }
     </style>
 </head>
@@ -957,13 +878,26 @@
                     <i class="fas fa-moon"></i> تم
                 </button>
             </div>
-            <button class="share-btn" onclick="shareWebsite()">
-                <i class="fas fa-share-alt"></i> اشتراک‌گذاری
-            </button>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                <!-- بخش کاربر -->
+                <div class="user-section">
+                    {% if current_user.is_authenticated %}
+                        <span class="user-greeting">👋 {{ current_user.username }}</span>
+                        <a href="{{ url_for('profile') }}">پروفایل</a>
+                        <a href="{{ url_for('logout') }}" class="logout-link">خروج</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}">ورود</a>
+                        <a href="{{ url_for('register') }}">ثبت‌نام</a>
+                    {% endif %}
+                </div>
+                <button class="share-btn" onclick="shareWebsite()">
+                    <i class="fas fa-share-alt"></i> اشتراک‌گذاری
+                </button>
+            </div>
         </div>
 
         <!-- ============================================================
-        ناوبری تاریخ (جدید)
+        ناوبری تاریخ
         ============================================================ -->
         <div class="date-navigation">
             <div class="nav-buttons">
@@ -1148,10 +1082,10 @@
         ============================================================ -->
         <div class="footer">
             <div class="social-links">
-                    <a href="https://t.me/HmHermi" title="تلگرام"><i class="fab fa-telegram-plane"></i></a>
-                    <a href="https://www.instagram.com/alimazhabe/" title="اینستاگرام"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/@alimazhabi" title="یوتیوب"><i class="fab fa-youtube"></i></a>
-                    <a href="#" title="گیت‌هاب"><i class="fab fa-github"></i></a>
+                <a href="#" title="تلگرام"><i class="fab fa-telegram-plane"></i></a>
+                <a href="#" title="اینستاگرام"><i class="fab fa-instagram"></i></a>
+                <a href="#" title="یوتیوب"><i class="fab fa-youtube"></i></a>
+                <a href="#" title="گیت‌هاب"><i class="fab fa-github"></i></a>
             </div>
             🤖 ربات هوشمند 🌙 به‌روز شده با ❤️ | {{ city }}
             <br>
@@ -1198,16 +1132,7 @@
             btn.classList.remove('visible');
         }
     });
-<div class="user-section">
-    {% if current_user.is_authenticated %}
-        <span class="user-greeting">👋 {{ current_user.username }}</span>
-        <a href="{{ url_for('profile') }}" class="profile-link">پروفایل</a>
-        <a href="{{ url_for('logout') }}" class="logout-link">خروج</a>
-    {% else %}
-        <a href="{{ url_for('login') }}" class="auth-link">ورود</a>
-        <a href="{{ url_for('register') }}" class="auth-link">ثبت‌نام</a>
-    {% endif %}
-</div>
+
     // ===== تغییر تم =====
     function toggleTheme() {
         document.body.classList.toggle('light-theme');
@@ -1243,9 +1168,6 @@
             else if (month <= 11) maxDay = 30;
             else {
                 // محاسبه کبیسه شمسی (تقریبی)
-                // برای دقت بیشتر می‌توان از API یا تابع backend استفاده کرد، اما برای فرم frontend کافی است
-                // کبیسه شمسی: (year % 4 == 0) و (year % 100 != 0) یا (year % 400 == 0) - اما برای شمسی پیچیده‌تر است
-                // ساده‌سازی: هر ۴ سال یکبار کبیسه است (با خطای کم)
                 const isLeap = (year % 4 === 0);
                 maxDay = isLeap ? 30 : 29;
             }
@@ -1265,7 +1187,7 @@
 
         monthSelect.addEventListener('change', updateDays);
         yearSelect.addEventListener('change', updateDays);
-        updateDays(); // تنظیم اولیه
+        updateDays();
     });
 </script>
 </body>
