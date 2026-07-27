@@ -492,7 +492,101 @@ def get_cached(key):
 
 def set_cached(key, value):
     cache[key] = (value, datetime.now())
+# ============================================================
+# مسیرهای احراز هویت
+# ============================================================
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('ثبت‌نام با موفقیت انجام شد. حالا می‌توانید وارد شوید.', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('home'))
+        else:
+            flash('نام کاربری یا رمز عبور اشتباه است.', 'danger')
+    return render_template('login.html', form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('شما خارج شدید.', 'info')
+    return redirect(url_for('home'))
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = ProfileForm(obj=current_user)
+    if form.validate_on_submit():
+        current_user.preferred_city = form.preferred_city.data
+        db.session.commit()
+        flash('تنظیمات با موفقیت ذخیره شد.', 'success')
+        return redirect(url_for('profile'))
+    return render_template('profile.html', form=form)
+
+# ============================================================
+# مسیر اصلی (با استفاده از شهر کاربر در صورت ورود)
+# ============================================================
+@app.route('/')
+def home():
+    # دریافت شهر از پارامتر URL، اگر نبود از شهر کاربر (در صورت ورود) و در غیر این صورت 'قم'
+    city = request.args.get('city')
+    if not city and current_user.is_authenticated:
+        city = current_user.preferred_city
+    if not city:
+        city = 'قم'
+
+    selected_date = parse_date_params()
+    today = get_today_tehran()
+    
+    # ... (بقیه کدهای home مانند قبل، فقط city را از پارامتر get نمی‌گیریم بلکه از متغیر city استفاده می‌کنیم)
+    # دقت کنید که selected_city را هم به قالب بفرستید.
+    
+    # ... (سایر متغیرها)
+
+    return render_template('index.html',
+        persian_date=persian_date,
+        miladi_date=miladi_date,
+        hijri_date=hijri_date,
+        prayer=prayer,
+        weather=weather,
+        shamsi_events=shamsi_events_list,
+        hijri_events=hijri_events_list,
+        next_prayer_name=next_prayer_name,
+        next_prayer_time=next_prayer_time,
+        motivation=motivation,
+        city=city,
+        selected_city=city,
+        selected_year=selected_date.year,
+        selected_month=selected_date.month,
+        selected_day=selected_date.day,
+        prev_year=prev_day.year,
+        prev_month=prev_day.month,
+        prev_day_num=prev_day.day,
+        next_year=next_day.year,
+        next_month=next_day.month,
+        next_day_num=next_day.day,
+        months_fa=PERSIAN_MONTHS,
+        is_today=(selected_date == today)
+    )
 # ============================================================
 # توابع اصلی
 # ============================================================
