@@ -1,12 +1,82 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField, SelectField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 import jdatetime
 from hijri_converter import Gregorian
 from datetime import datetime, timedelta
 import requests
 import pytz
 import random
+import os
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your-secret-key-here'  # در تولید این را با متغیر محیطی جایگزین کنید
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message = 'لطفاً ابتدا وارد شوید.'
+
+# ============================================================
+# مدل کاربر
+# ============================================================
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(200), nullable=False)
+    preferred_city = db.Column(db.String(50), default='قم')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+# ============================================================
+# فرم‌های WTForm
+# ============================================================
+class RegistrationForm(FlaskForm):
+    username = StringField('نام کاربری', validators=[DataRequired(), Length(min=3, max=80)])
+    email = StringField('ایمیل', validators=[DataRequired(), Email()])
+    password = PasswordField('رمز عبور', validators=[DataRequired(), Length(min=6)])
+    confirm_password = PasswordField('تکرار رمز عبور', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('ثبت‌نام')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('این نام کاربری قبلاً استفاده شده است.')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('این ایمیل قبلاً ثبت شده است.')
+
+class LoginForm(FlaskForm):
+    username = StringField('نام کاربری', validators=[DataRequired()])
+    password = PasswordField('رمز عبور', validators=[DataRequired()])
+    submit = SubmitField('ورود')
+
+class ProfileForm(FlaskForm):
+    preferred_city = SelectField('شهر پیش‌فرض', choices=[
+        ('قم', 'قم'), ('تهران', 'تهران'), ('مشهد', 'مشهد'),
+        ('اصفهان', 'اصفهان'), ('شیراز', 'شیراز'), ('تبریز', 'تبریز'),
+        ('کرج', 'کرج'), ('اهواز', 'اهواز'), ('یزد', 'یزد'),
+        ('کرمانشاه', 'کرمانشاه')
+    ])
+    submit = SubmitField('ذخیره تنظیمات')
 
 # ============================================================
 # دیکشنری‌های فارسی
