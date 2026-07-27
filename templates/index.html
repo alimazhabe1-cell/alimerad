@@ -109,30 +109,30 @@
             background: rgba(0, 0, 0, 0.12);
         }
 
-        body.light-theme .date-navigation {
+        body.light-theme .date-navigation-bottom {
             border-color: rgba(0, 0, 0, 0.06);
         }
 
-        body.light-theme .nav-btn {
+        body.light-theme .nav-btn-bottom {
             background: rgba(0, 0, 0, 0.04);
             border-color: rgba(0, 0, 0, 0.06);
             color: #1a1a2e;
         }
 
-        body.light-theme .nav-btn:hover {
+        body.light-theme .nav-btn-bottom:hover {
             background: rgba(0, 0, 0, 0.10);
         }
 
-        body.light-theme .date-selects {
+        body.light-theme .date-selects-bottom {
             background: rgba(0, 0, 0, 0.03);
         }
 
-        body.light-theme .date-selects select {
+        body.light-theme .date-selects-bottom select {
             background: rgba(0, 0, 0, 0.04);
             color: #1a1a2e;
         }
 
-        body.light-theme .date-selects select option {
+        body.light-theme .date-selects-bottom select option {
             background: #fff;
             color: #1a1a2e;
         }
@@ -268,112 +268,6 @@
             background: rgba(255, 255, 255, 0.16);
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* ===== ناوبری تاریخ ===== */
-        .date-navigation {
-            margin: 15px 0 20px 0;
-            padding: 12px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            position: relative;
-            z-index: 1;
-        }
-
-        .nav-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
-        }
-
-        .nav-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 50px;
-            padding: 8px 18px;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.16);
-            transform: translateY(-2px);
-        }
-
-        .nav-btn.today-btn {
-            background: linear-gradient(135deg, #f7971e, #ffd200);
-            color: #1a1a2e;
-            font-weight: 600;
-            border: none;
-        }
-
-        .nav-btn.today-btn:hover {
-            transform: scale(1.04);
-        }
-
-        .date-picker-form {
-            display: flex;
-            justify-content: center;
-        }
-
-        .date-selects {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.04);
-            padding: 8px 12px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .date-selects select {
-            background: rgba(255, 255, 255, 0.06);
-            border: none;
-            border-radius: 30px;
-            padding: 6px 12px;
-            color: var(--text-primary);
-            font-size: 14px;
-            font-family: 'Vazirmatn';
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .date-selects select:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .date-selects select option {
-            background: #1a1a2e;
-            color: #fff;
-        }
-
-        .date-selects .go-btn {
-            background: linear-gradient(135deg, #f7971e, #ffd200);
-            border: none;
-            border-radius: 30px;
-            padding: 6px 18px;
-            color: #1a1a2e;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Vazirmatn';
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .date-selects .go-btn:hover {
-            transform: scale(1.04);
         }
 
         /* ===== انتخاب شهر ===== */
@@ -712,10 +606,116 @@
             z-index: 1;
         }
 
+        /* ===== ناوبری تاریخ (پایین صفحه) ===== */
+        .date-navigation-bottom {
+            margin: 25px 0 15px 0;
+            padding: 15px 0 10px 0;
+            border-top: 2px solid rgba(255, 215, 0, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-buttons-bottom {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .nav-btn-bottom {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 50px;
+            padding: 8px 18px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn-bottom:hover {
+            background: rgba(255, 255, 255, 0.16);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn-bottom.today-btn {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a1a2e;
+            font-weight: 600;
+            border: none;
+        }
+
+        .nav-btn-bottom.today-btn:hover {
+            transform: scale(1.04);
+        }
+
+        .date-picker-form-bottom {
+            display: flex;
+            justify-content: center;
+        }
+
+        .date-selects-bottom {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 8px 12px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .date-selects-bottom select {
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            border-radius: 30px;
+            padding: 6px 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: 'Vazirmatn';
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .date-selects-bottom select:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .date-selects-bottom select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .date-selects-bottom .go-btn {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            border: none;
+            border-radius: 30px;
+            padding: 6px 18px;
+            color: #1a1a2e;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn';
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .date-selects-bottom .go-btn:hover {
+            transform: scale(1.04);
+        }
+
         /* ===== فوتر ===== */
         .footer {
             text-align: center;
-            margin-top: 22px;
+            margin-top: 15px;
             padding-top: 18px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             font-size: 13px;
@@ -806,10 +806,11 @@
             .events-section ul li { font-size: 13px; }
             .footer .social-links { gap: 14px; }
             #backToTop { width: 46px; height: 46px; font-size: 20px; bottom: 20px; right: 20px; }
-            .date-selects { padding: 6px 8px; }
-            .date-selects select { font-size: 12px; padding: 4px 8px; }
-            .date-selects .go-btn { font-size: 12px; padding: 4px 12px; }
-            .nav-btn { font-size: 12px; padding: 6px 12px; }
+            .date-selects-bottom { padding: 6px 8px; }
+            .date-selects-bottom select { font-size: 12px; padding: 4px 8px; }
+            .date-selects-bottom .go-btn { font-size: 12px; padding: 4px 12px; }
+            .nav-btn-bottom { font-size: 12px; padding: 6px 12px; }
+            .date-navigation-bottom { margin: 20px 0 10px 0; padding: 12px 0 8px 0; }
         }
 
         @media (max-width: 400px) {
@@ -832,6 +833,9 @@
             .share-btn { font-size: 12px; padding: 6px 12px; }
             .city-selector select { font-size: 13px; padding: 10px 14px; padding-right: 38px; }
             .city-selector button { font-size: 13px; padding: 10px 16px; }
+            .date-selects-bottom select { font-size: 11px; padding: 3px 6px; }
+            .date-selects-bottom .go-btn { font-size: 11px; padding: 3px 10px; }
+            .nav-btn-bottom { font-size: 11px; padding: 5px 10px; }
         }
     </style>
 </head>
@@ -848,7 +852,7 @@
                 <img src="{{ url_for('static', filename='logo.png') }}" 
                      alt="لوگو" 
                      class="site-logo">
-                <h1>روز زیبا</h1>
+                <h1>اطلاعات روز</h1>
                 <button class="theme-toggle" onclick="toggleTheme()">
                     <i class="fas fa-moon"></i> تم
                 </button>
@@ -856,47 +860,6 @@
             <button class="share-btn" onclick="shareWebsite()">
                 <i class="fas fa-share-alt"></i> اشتراک‌گذاری
             </button>
-        </div>
-
-        <!-- ============================================================
-        ناوبری تاریخ
-        ============================================================ -->
-        <div class="date-navigation">
-            <div class="nav-buttons">
-                <a href="{{ url_for('home', year=prev_year, month=prev_month, day=prev_day_num, city=selected_city) }}" class="nav-btn">
-                    <i class="fas fa-chevron-right"></i> روز قبل
-                </a>
-                <a href="{{ url_for('home', city=selected_city) }}" class="nav-btn today-btn" {% if is_today %}style="opacity:0.4;pointer-events:none;"{% endif %}>
-                    <i class="fas fa-calendar-day"></i> امروز
-                </a>
-                <a href="{{ url_for('home', year=next_year, month=next_month, day=next_day_num, city=selected_city) }}" class="nav-btn">
-                    روز بعد <i class="fas fa-chevron-left"></i>
-                </a>
-            </div>
-
-            <form method="GET" action="/" class="date-picker-form">
-                <input type="hidden" name="city" value="{{ selected_city }}">
-                <div class="date-selects">
-                    <select name="year">
-                        {% for y in range(1390, 1451) %}
-                            <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
-                        {% endfor %}
-                    </select>
-                    <select name="month" id="monthSelect">
-                        {% for m in range(1, 13) %}
-                            <option value="{{ m }}" {% if m == selected_month %}selected{% endif %}>{{ months_fa[m] }}</option>
-                        {% endfor %}
-                    </select>
-                    <select name="day" id="daySelect">
-                        {% for d in range(1, 32) %}
-                            <option value="{{ d }}" {% if d == selected_day %}selected{% endif %}>{{ d }}</option>
-                        {% endfor %}
-                    </select>
-                    <button type="submit" class="go-btn">
-                        <i class="fas fa-arrow-left"></i> برو
-                    </button>
-                </div>
-            </form>
         </div>
 
         <!-- ============================================================
@@ -1040,14 +1003,54 @@
         </div>
 
         <!-- ============================================================
+        ناوبری تاریخ (پایین صفحه)
+        ============================================================ -->
+        <div class="date-navigation-bottom">
+            <div class="nav-buttons-bottom">
+                <a href="{{ url_for('home', year=prev_year, month=prev_month, day=prev_day_num, city=selected_city) }}" class="nav-btn-bottom">
+                    <i class="fas fa-chevron-right"></i> روز قبل
+                </a>
+                <a href="{{ url_for('home', city=selected_city) }}" class="nav-btn-bottom today-btn" {% if is_today %}style="opacity:0.4;pointer-events:none;"{% endif %}>
+                    <i class="fas fa-calendar-day"></i> امروز
+                </a>
+                <a href="{{ url_for('home', year=next_year, month=next_month, day=next_day_num, city=selected_city) }}" class="nav-btn-bottom">
+                    روز بعد <i class="fas fa-chevron-left"></i>
+                </a>
+            </div>
+
+            <form method="GET" action="/" class="date-picker-form-bottom">
+                <input type="hidden" name="city" value="{{ selected_city }}">
+                <div class="date-selects-bottom">
+                    <select name="year">
+                        {% for y in range(1390, 1451) %}
+                            <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="month" id="monthSelect">
+                        {% for m in range(1, 13) %}
+                            <option value="{{ m }}" {% if m == selected_month %}selected{% endif %}>{{ months_fa[m] }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="day" id="daySelect">
+                        {% for d in range(1, 32) %}
+                            <option value="{{ d }}" {% if d == selected_day %}selected{% endif %}>{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="go-btn">
+                        <i class="fas fa-arrow-left"></i> برو
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ============================================================
         فوتر
         ============================================================ -->
         <div class="footer">
             <div class="social-links">
-                <a href="#" title="تلگرام"><i class="fab fa-telegram-plane"></i></a>
-                <a href="#" title="اینستاگرام"><i class="fab fa-instagram"></i></a>
-                <a href="#" title="یوتیوب"><i class="fab fa-youtube"></i></a>
-                <a href="#" title="گیت‌هاب"><i class="fab fa-github"></i></a>
+                    <a href="https://t.me/HmHermi" title="تلگرام"><i class="fab fa-telegram-plane"></i></a>
+                    <a href="https://www.instagram.com/alimazhabe/" title="اینستاگرام"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@alimazhabi" title="یوتیوب"><i class="fab fa-youtube"></i></a>
             </div>
             🤖 ربات هوشمند 🌙 به‌روز شده با ❤️ | {{ city }}
             <br>
@@ -1124,7 +1127,6 @@
         const citySelect = document.getElementById('citySelect');
         const updateBtn = document.getElementById('updateBtn');
         
-        // بازیابی شهر ذخیره‌شده
         const savedCity = localStorage.getItem('preferredCity');
         if (savedCity && !new URLSearchParams(window.location.search).get('city')) {
             const options = citySelect.options;
@@ -1136,7 +1138,6 @@
             }
         }
 
-        // ذخیره شهر هنگام کلیک بروزرسانی
         updateBtn.addEventListener('click', function(e) {
             const selectedCity = citySelect.value;
             localStorage.setItem('preferredCity', selectedCity);
