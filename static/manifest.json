@@ -1,22 +1,41 @@
 {
+  "id": "alimerad-app",
   "name": "اطلاعات روز - تقویم و اوقات شرعی",
-  "short_name": "روز زیبا",
+  "short_name": "اطلاعات روز",
   "description": "تقویم شمسی، میلادی، قمری، اوقات شرعی و مناسبت‌ها",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f0c29",
   "theme_color": "#f7971e",
   "orientation": "portrait",
+  "categories": ["lifestyle", "productivity", "utilities", "education"],
+  "screenshots": [
+    {
+      "src": "/static/screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "platform": "android"
+    },
+    {
+      "src": "/static/screenshot2.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "platform": "android"
+    }
+  ],
   "icons": [
     {
       "src": "/static/logo-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/static/logo-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "prefer_related_applications": false
 }
