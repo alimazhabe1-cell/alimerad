@@ -1,7 +1,11 @@
-// نام کش (با هر بار تغییر، عدد آن را زیاد کنید تا کش قدیمی پاک شود)
-const CACHE_NAME = 'info-day-v3';
+// ============================================================
+//  Service Worker – کاملاً بهینه برای آفلاین
+// ============================================================
 
-// لیست فایل‌هایی که باید کش شوند
+const CACHE_NAME = 'info-day-v5';
+const OFFLINE_URL = '/offline.html';  // صفحه آفلاین اختصاصی (اختیاری)
+
+// فایل‌هایی که باید کش شوند (همه مسیرها مطلق از ریشه سایت)
 const urlsToCache = [
   '/',
   '/static/logo.png',
@@ -12,47 +16,54 @@ const urlsToCache = [
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css'
 ];
 
-// ===== نصب Service Worker =====
+// ===== نصب و کش کردن فایل‌ها =====
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('✅ کش باز شد');
-        return cache.addAll(urlsToCache);
+        console.log('✅ کش در حال ایجاد...');
+        return cache.addAll(urlsToCache).catch(err => {
+          console.warn('⚠️ برخی فایل‌ها کش نشدند:', err);
+        });
       })
+      .then(() => self.skipWaiting())  // فعال‌سازی فوری سرویس‌ورکر جدید
   );
 });
 
 // ===== فعال‌سازی و پاکسازی کش‌های قدیمی =====
 self.addEventListener('activate', event => {
-  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
-        cacheNames.map(cacheName => {
-          if (!cacheWhitelist.includes(cacheName)) {
-            console.log('🗑️ کش قدیمی حذف شد:', cacheName);
-            return caches.delete(cacheName);
+        cacheNames.map(cache => {
+          if (cache !== CACHE_NAME) {
+            console.log('🗑️ کش قدیمی حذف شد:', cache);
+            return caches.delete(cache);
           }
         })
       );
     })
+    .then(() => self.clients.claim())  // کنترل فوری تمام تب‌ها
   );
 });
 
-// ===== پاسخ به درخواست‌ها (از کش یا شبکه) =====
+// ===== پاسخ به درخواست‌ها (استراتژی Cache First) =====
 self.addEventListener('fetch', event => {
+  // درخواست‌های مربوط به API را از کش خارج می‌کنیم (داده‌ها را خودمان در localStorage ذخیره می‌کنیم)
+  if (event.request.url.includes('/api/')) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // اگر در کش بود، از کش برگردان (آفلاین)
         if (response) {
-          return response;
+          return response;  // از کش برگردان
         }
-        // اگر نه، از شبکه بگیر و در کش ذخیره کن
+        // اگر در کش نبود، از شبکه بگیر و کش کن
         return fetch(event.request)
           .then(response => {
-            // فقط پاسخ‌های معتبر را کش کن
             if (!response || response.status !== 200 || response.type !== 'basic') {
               return response;
             }
@@ -61,19 +72,16 @@ self.addEventListener('fetch', event => {
               .then(cache => {
                 try {
                   cache.put(event.request, responseToCache);
-                } catch (e) {
-                  // برخی درخواست‌ها قابل کش نیستند (مثل API)
-                }
+                } catch (e) {}
               });
             return response;
           })
           .catch(() => {
-            // اگر آفلاین بود و چیزی در کش نبود، یک صفحه خطا نشان بده
-            // می‌توانید یک صفحه آفلاین اختصاصی بسازید
-            return new Response('⚠️ شما آفلاین هستید. لطفاً اتصال اینترنت را بررسی کنید.', {
-              status: 503,
-              statusText: 'Service Unavailable'
-            });
+            // در صورت خطای شبکه و عدم وجود کش، صفحه آفلاین نمایش داده شود
+            return caches.match(OFFLINE_URL) || new Response(
+              '⚠️ شما آفلاین هستید. لطفاً اتصال اینترنت را بررسی کنید.',
+              { status: 503, statusText: 'Service Unavailable' }
+            );
           });
       })
   );
