@@ -13,7 +13,6 @@
   "lang": "fa",
   "dir": "rtl",
   "categories": ["lifestyle", "productivity", "utilities", "education"],
-  "iarc_rating_id": "",
   "prefer_related_applications": false,
   "screenshots": [
     {
@@ -27,6 +26,13 @@
       "sizes": "1080x1920",
       "type": "image/png",
       "platform": "android"
+    },
+    {
+      "src": "/static/screenshot-wide.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "android",
+      "form_factor": "wide"
     }
   ],
   "icons": [
@@ -50,13 +56,6 @@
       "description": "مشاهده اوقات شرعی امروز",
       "url": "/",
       "icons": [{ "src": "/static/logo-192.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "مناسبت‌ها",
-      "short_name": "مناسبت‌ها",
-      "description": "مشاهده مناسبت‌های امروز",
-      "url": "/",
-      "icons": [{ "src": "/static/logo-192.png", "sizes": "192x192" }]
     }
   ],
   "share_target": {
@@ -68,8 +67,5 @@
       "text": "text",
       "url": "url"
     }
-  },
-  "launch_handler": {
-    "client_mode": "auto"
   }
 }
