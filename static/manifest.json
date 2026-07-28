@@ -4,11 +4,17 @@
   "short_name": "اطلاعات روز",
   "description": "تقویم شمسی، میلادی، قمری، اوقات شرعی و مناسبت‌ها",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone"],
   "background_color": "#0f0c29",
   "theme_color": "#f7971e",
   "orientation": "portrait",
+  "lang": "fa",
+  "dir": "rtl",
   "categories": ["lifestyle", "productivity", "utilities", "education"],
+  "iarc_rating_id": "",
+  "prefer_related_applications": false,
   "screenshots": [
     {
       "src": "/static/screenshot1.png",
@@ -37,5 +43,33 @@
       "purpose": "any maskable"
     }
   ],
-  "prefer_related_applications": false
+  "shortcuts": [
+    {
+      "name": "اوقات شرعی",
+      "short_name": "اوقات شرعی",
+      "description": "مشاهده اوقات شرعی امروز",
+      "url": "/",
+      "icons": [{ "src": "/static/logo-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "مناسبت‌ها",
+      "short_name": "مناسبت‌ها",
+      "description": "مشاهده مناسبت‌های امروز",
+      "url": "/",
+      "icons": [{ "src": "/static/logo-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "launch_handler": {
+    "client_mode": "auto"
+  }
 }
