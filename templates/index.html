@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>اطلاعات روز - تقویم و اوقات شرعی</title>
-    
+
+    <!-- ===== PWA ===== -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#f7971e">
+
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -849,8 +853,8 @@
         ============================================================ -->
         <div class="header">
             <div class="header-left">
-                <img src="{{ url_for('static', filename='logo.png') }}" 
-                     alt="لوگو" 
+                <img src="{{ url_for('static', filename='logo.png') }}"
+                     alt="لوگو"
                      class="site-logo">
                 <h1>اطلاعات روز</h1>
                 <button class="theme-toggle" onclick="toggleTheme()">
@@ -1068,7 +1072,7 @@
 </button>
 
 <!-- ============================================================
-جاوااسکریپت
+جاوااسکریپت (با قابلیت‌های PWA و آفلاین)
 ============================================================ -->
 <script>
     // ===== اشتراک‌گذاری با لینک ثابت =====
@@ -1178,6 +1182,129 @@
             monthSelect.addEventListener('change', updateDays);
             yearSelect.addEventListener('change', updateDays);
             updateDays();
+        }
+    });
+
+    // ================================================================
+    //  PWA – ثبت Service Worker و ذخیره‌سازی آفلاین
+    // ================================================================
+
+    // ۱. ثبت Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/static/service-worker.js')
+            .then(registration => {
+                console.log('✅ Service Worker ثبت شد');
+            })
+            .catch(error => {
+                console.log('❌ خطا در ثبت Service Worker:', error);
+            });
+    }
+
+    // ۲. توابع ذخیره‌سازی آفلاین
+    function saveDataOffline(key, data) {
+        try {
+            localStorage.setItem(key, JSON.stringify({
+                data: data,
+                timestamp: Date.now()
+            }));
+        } catch (e) {
+            console.warn('⚠️ ذخیره‌سازی ناموفق:', e);
+        }
+    }
+
+    function getDataOffline(key) {
+        try {
+            const raw = localStorage.getItem(key);
+            if (!raw) return null;
+            const stored = JSON.parse(raw);
+            // داده‌های بیشتر از ۲۴ ساعت منقضی شوند
+            if (Date.now() - stored.timestamp > 24 * 60 * 60 * 1000) {
+                localStorage.removeItem(key);
+                return null;
+            }
+            return stored.data;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    // ۳. ذخیره اطلاعات فعلی صفحه
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentData = {
+            persian_date: document.querySelector('.date-box .value')?.textContent,
+            miladi_date: document.querySelectorAll('.date-box .value')[1]?.textContent,
+            hijri_date: document.querySelectorAll('.date-box .value')[2]?.textContent,
+            city: document.querySelector('.prayer-title span')?.textContent || 'قم',
+            motivation: document.querySelector('.motivation-text')?.textContent
+        };
+        if (currentData.persian_date) {
+            saveDataOffline('pageData', currentData);
+        }
+    });
+
+    // ۴. نمایش دکمه نصب اپلیکیشن (PWA)
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+
+        const installBtn = document.createElement('button');
+        installBtn.textContent = '📲 نصب اپلیکیشن';
+        installBtn.id = 'installAppBtn';
+        installBtn.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a1a2e;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            z-index: 1000;
+            box-shadow: 0 4px 25px rgba(255, 210, 0, 0.5);
+            cursor: pointer;
+            font-family: 'Vazirmatn';
+            animation: fadeInUp 0.5s ease;
+        `;
+        document.body.appendChild(installBtn);
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const result = await deferredPrompt.userChoice;
+                if (result.outcome === 'accepted') {
+                    console.log('✅ کاربر اپلیکیشن را نصب کرد.');
+                }
+                deferredPrompt = null;
+                installBtn.remove();
+            }
+        });
+    });
+
+    // ۵. نمایش پیام آفلاین در صورت قطع اینترنت
+    window.addEventListener('offline', function() {
+        const cached = getDataOffline('pageData');
+        if (cached) {
+            const msg = document.createElement('div');
+            msg.className = 'offline-msg';
+            msg.style.cssText = `
+                background: rgba(255, 215, 0, 0.15);
+                border: 1px solid #ffd700;
+                border-radius: 12px;
+                padding: 10px 16px;
+                margin: 10px 0;
+                color: #ffd700;
+                text-align: center;
+                font-size: 14px;
+            `;
+            msg.innerHTML = '📶 شما آفلاین هستید. اطلاعات از حافظه کش نمایش داده می‌شود.';
+            const container = document.querySelector('.card');
+            if (container && !document.querySelector('.offline-msg')) {
+                container.insertBefore(msg, container.firstChild);
+            }
         }
     });
 </script>
