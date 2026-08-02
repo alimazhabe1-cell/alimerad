@@ -950,21 +950,23 @@
             </div>
         </div>
         <!-- قیمت بازار -->
-        <section class="card market-card" style="margin: 1rem 0; padding: 1rem; border-radius: 12px;">
-            <h3 style="margin-bottom: 0.75rem;">📊 قیمت بازار</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 1.25rem;">
-                <div>
-                    <span>💵 دلار آزاد:</span>
-                    <strong style="font-size: 1.1em;">{{ dollar_fa }}</strong>
-                    <small> ریال</small>
+        <div class="events-section" style="margin-top: 14px;">
+            <h3><i class="fas fa-chart-line" style="margin-left:8px;"></i>قیمت بازار</h3>
+            <div class="grid-2" style="margin: 10px 0 0 0;">
+                <div class="info-card" style="border-bottom-color: #4ade80;">
+                    <div class="icon">💵</div>
+                    <div class="title">دلار آزاد</div>
+                    <div class="data">{{ dollar_fa }}</div>
+                    <div class="title" style="margin-top:4px;">ریال</div>
                 </div>
-                <div>
-                    <span>🥇 طلای ۱۸ عیار:</span>
-                    <strong style="font-size: 1.1em;">{{ gold18_fa }}</strong>
-                    <small> ریال</small>
+                <div class="info-card" style="border-bottom-color: #fbbf24;">
+                    <div class="icon">🥇</div>
+                    <div class="title">طلای ۱۸ عیار</div>
+                    <div class="data">{{ gold18_fa }}</div>
+                    <div class="title" style="margin-top:4px;">ریال</div>
                 </div>
             </div>
-        </section>
+        </div>
         <!-- ============================================================
         اوقات شرعی
         ============================================================ -->
