@@ -4,3 +4,4 @@ requests
 hijri-converter
 pytz
 gunicorn
+beautifulsoup4
