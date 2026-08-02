@@ -856,7 +856,7 @@
                 <img src="{{ url_for('static', filename='logo.png') }}"
                      alt="لوگو"
                      class="site-logo">
-                <h1>اطلاعات روز</h1>
+                <h1>روز زیبا</h1>
                 <button class="theme-toggle" onclick="toggleTheme()">
                     <i class="fas fa-moon"></i> تم
                 </button>
@@ -949,7 +949,22 @@
                 <div class="data">{{ weather.condition if weather else '❌' }}</div>
             </div>
         </div>
-
+        <!-- قیمت بازار -->
+        <section class="card market-card" style="margin: 1rem 0; padding: 1rem; border-radius: 12px;">
+            <h3 style="margin-bottom: 0.75rem;">📊 قیمت بازار</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 1.25rem;">
+                <div>
+                    <span>💵 دلار آزاد:</span>
+                    <strong style="font-size: 1.1em;">{{ dollar_fa }}</strong>
+                    <small> ریال</small>
+                </div>
+                <div>
+                    <span>🥇 طلای ۱۸ عیار:</span>
+                    <strong style="font-size: 1.1em;">{{ gold18_fa }}</strong>
+                    <small> ریال</small>
+                </div>
+            </div>
+        </section>
         <!-- ============================================================
         اوقات شرعی
         ============================================================ -->
